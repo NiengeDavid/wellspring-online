@@ -172,6 +172,7 @@ export type Course = {
   }>;
   featured?: boolean;
   completedBy?: Array<string>;
+  lessonCount?: number;
 };
 
 export type Category = {

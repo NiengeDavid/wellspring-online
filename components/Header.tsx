@@ -25,12 +25,15 @@ import {
   Menu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const loggedOutLinks = [
   { href: "#courses", label: "Courses" },
   { href: "/pricing", label: "Pricing" },
   { href: "#testimonials", label: "Reviews" },
 ];
+
+const LogoImage = "/assets/logowhite.png";
 
 export function Header() {
   const pathname = usePathname();
@@ -147,7 +150,7 @@ export function Header() {
             </Button>
           </SignInButton>
           <Link href="/pricing" className="hidden sm:block">
-            <Button className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-lg shadow-violet-600/25">
+            <Button className="bg-linear-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-lg shadow-violet-600/25">
               Start Learning
             </Button>
           </Link>
@@ -211,20 +214,13 @@ function Logo() {
   return (
     <>
       <div className="relative">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center shadow-lg shadow-violet-500/25 group-hover:shadow-violet-500/40 transition-shadow">
-          <Code2 className="w-5 h-5 text-white" />
-        </div>
-        <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
-          <Play className="w-2 h-2 text-white fill-white" />
-        </div>
-      </div>
-      <div className="flex flex-col">
-        <span className="font-bold text-lg tracking-tight leading-none">
-          SONNY
-        </span>
-        <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-          Academy
-        </span>
+        <Image
+          src={LogoImage}
+          alt="Wellspring Logo"
+          width={262}
+          height={85}
+          className="object-contain"
+        />
       </div>
     </>
   );

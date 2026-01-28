@@ -16,9 +16,13 @@ import {
   Sparkles,
   LayoutDashboard,
 } from "lucide-react";
+import Image from "next/image";
 import { sanityFetch } from "@/sanity/lib/live";
 import { FEATURED_COURSES_QUERY, STATS_QUERY } from "@/sanity/lib/queries";
 import { currentUser } from "@clerk/nextjs/server";
+import type { Course } from "@/sanity.types";
+
+const LogoImage = "/assets/logowhite.png";
 
 export default async function Home() {
   // Fetch featured courses, stats, and check auth status
@@ -67,7 +71,7 @@ export default async function Home() {
             >
               <Sparkles className="w-4 h-4 text-violet-400" />
               <span className="text-sm text-violet-300">
-                Learn to code with real-world projects
+                Powered by Accelerated Christian Education (ACE)
               </span>
             </div>
 
@@ -76,9 +80,9 @@ export default async function Home() {
               className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight leading-[0.95] mb-8 animate-fade-in"
               style={{ animationDelay: "0.2s" }}
             >
-              <span className="block text-white">Master coding</span>
-              <span className="block bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
-                the modern way
+              <span className="block text-white">Biblically-Based</span>
+              <span className="block bg-linear-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
+                Individualized Education
               </span>
             </h1>
 
@@ -87,7 +91,7 @@ export default async function Home() {
               className="text-lg md:text-xl text-zinc-400 max-w-2xl mb-10 leading-relaxed animate-fade-in"
               style={{ animationDelay: "0.3s" }}
             >
-              Join Sonny&apos;s Academy and learn from expertly crafted courses,
+              Join Wellspring today and learn from expertly crafted courses,
               modules, and hands-on lessons. From free fundamentals to{" "}
               <span className="text-fuchsia-400">Pro exclusives</span> and{" "}
               <span className="text-cyan-400">Ultra gems</span>.
@@ -103,7 +107,7 @@ export default async function Home() {
                   <Link href="/dashboard">
                     <Button
                       size="lg"
-                      className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-8 h-12 text-base font-semibold"
+                      className="bg-linear-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-8 h-12 text-base font-semibold"
                     >
                       <LayoutDashboard className="w-4 h-4 mr-2" />
                       Go to Dashboard
@@ -125,7 +129,7 @@ export default async function Home() {
                   <Link href="/pricing">
                     <Button
                       size="lg"
-                      className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-8 h-12 text-base font-semibold"
+                      className="bg-linear-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-8 h-12 text-base font-semibold"
                     >
                       <Play className="w-4 h-4 mr-2 fill-white" />
                       Start Learning Free
@@ -233,12 +237,12 @@ export default async function Home() {
                 className={`relative p-8 rounded-2xl ${plan.bgGlow} border ${plan.borderColor} ${plan.popular ? "ring-2 ring-violet-500/50" : ""} transition-all duration-300 hover:scale-[1.02]`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-xs font-semibold">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-linear-to-r from-violet-500 to-fuchsia-500 text-xs font-semibold">
                     Most Popular
                   </div>
                 )}
                 <div
-                  className={`w-12 h-12 rounded-xl bg-gradient-to-br ${plan.gradient} flex items-center justify-center mb-4 shadow-lg`}
+                  className={`w-12 h-12 rounded-xl bg-linear-to-br ${plan.gradient} flex items-center justify-center mb-4 shadow-lg`}
                 >
                   <plan.icon className="w-6 h-6 text-white" />
                 </div>
@@ -267,7 +271,7 @@ export default async function Home() {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-bold mb-4">
               Courses built for{" "}
-              <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
                 real results
               </span>
             </h2>
@@ -278,16 +282,15 @@ export default async function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {courses.map((course) => (
+            {courses.map((course: Course) => (
               <CourseCard
                 key={course.slug!.current!}
                 slug={{ current: course.slug!.current! }}
-                title={course.title}
-                description={course.description}
-                tier={course.tier}
-                thumbnail={course.thumbnail}
-                moduleCount={course.moduleCount}
-                lessonCount={course.lessonCount}
+                title={course.title || ""}
+                description={course.description || ""}
+                tier={course.tier ?? null}
+                thumbnail={course.thumbnail ?? null}
+                lessonCount={course.lessonCount ?? null}
               />
             ))}
           </div>
@@ -313,7 +316,7 @@ export default async function Home() {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-bold mb-4">
               Students{" "}
-              <span className="bg-gradient-to-r from-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-linearl-to-r fl-to-r fl-to-r f-to-r from-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
                 love it
               </span>
             </h2>
@@ -374,12 +377,12 @@ export default async function Home() {
 
         {/* CTA Section */}
         <section className="px-6 lg:px-12 py-20 max-w-7xl mx-auto">
-          <div className="relative rounded-3xl bg-gradient-to-br from-violet-600/20 via-fuchsia-600/10 to-cyan-600/20 border border-white/10 p-12 md:p-20 text-center overflow-hidden">
+          <div className="relative rounded-3xl bg-linear-to-br from-violet-600/20 via-fuchsia-600/10 to-cyan-600/20 border border-white/10 p-12 md:p-20 text-center overflow-hidden">
             {/* Animated gradient border */}
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-violet-500/20 via-fuchsia-500/20 to-cyan-500/20 blur-xl" />
+            <div className="absolute inset-0 rounded-3xl bg-linear-to-r from-violet-500/20 via-fuchsia-500/20 to-cyan-500/20 blur-xl" />
 
             <div className="relative z-10">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-violet-500/30">
+              <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-violet-500/30">
                 <Rocket className="w-8 h-8 text-white" />
               </div>
               <h2 className="text-3xl md:text-5xl font-bold mb-6">
@@ -392,7 +395,7 @@ export default async function Home() {
               <Link href="/pricing">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-10 h-14 text-lg font-semibold"
+                  className="bg-linear-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-10 h-14 text-lg font-semibold"
                 >
                   View Pricing
                   <ArrowRight className="w-5 h-5 ml-2" />
@@ -405,11 +408,14 @@ export default async function Home() {
         {/* Footer */}
         <footer className="px-6 lg:px-12 py-12 border-t border-zinc-800/50 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center">
-                <Code2 className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-bold">Sonny&apos;s Academy</span>
+            <div className="relative">
+              <Image
+                src={LogoImage}
+                alt="Wellspring Logo"
+                width={212}
+                height={75}
+                className="object-contain"
+              />
             </div>
             <div className="flex items-center gap-8 text-sm text-zinc-500">
               <Link href="#" className="hover:text-white transition-colors">
