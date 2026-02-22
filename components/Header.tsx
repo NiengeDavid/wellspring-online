@@ -217,7 +217,7 @@ function Logo() {
         <Image
           src={LogoImage}
           alt="Wellspring Logo"
-          width={262}
+          width={150}
           height={85}
           className="object-contain"
         />
