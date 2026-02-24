@@ -3,6 +3,8 @@
 import { SanityApp } from "@sanity/sdk-react";
 import { dataset, projectId } from "@/sanity/env";
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
 function SanityAppProvider({ children }: { children: React.ReactNode }) {
   return (
     <SanityApp
@@ -10,6 +12,9 @@ function SanityAppProvider({ children }: { children: React.ReactNode }) {
         {
           projectId,
           dataset,
+          auth: {
+            callbackUrl: `${appUrl}/admin`,
+          },
         },
       ]}
       // We handle the loading state in the Providers component by showing a loading indicator via the dynamic import
