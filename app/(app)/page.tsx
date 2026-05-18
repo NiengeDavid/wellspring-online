@@ -430,7 +430,8 @@ export default async function Home() {
               </Link>
             </div>
             <p className="text-sm text-zinc-600">
-              © 2024 Sonny&apos;s Academy. All rights reserved.
+              © {new Date().getFullYear()} Wellspring ILC. All rights
+              reserved.
             </p>
           </div>
         </footer>
