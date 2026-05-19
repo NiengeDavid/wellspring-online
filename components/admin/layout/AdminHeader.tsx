@@ -22,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
@@ -30,6 +31,8 @@ const NAV_ITEMS = [
   { href: "/admin/lessons", label: "Lessons", icon: PlayCircle },
   { href: "/admin/categories", label: "Categories", icon: Tag },
 ];
+
+const logo = '/assets/logomark512.png';
 
 function AdminHeader() {
   const pathname = usePathname();
@@ -47,10 +50,16 @@ function AdminHeader() {
           href="/admin"
           className="flex items-center gap-2.5 font-semibold lg:mr-8"
         >
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-600 shadow-lg shadow-violet-500/20">
-            <Code2 className="h-4 w-4 text-white" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-linear-to-br from-violet-500 to-fuchsia-600 shadow-lg shadow-violet-500/20">
+            <Image 
+              src={logo}
+              alt="Logo"
+              width={28}
+              height={28}
+              className="p-0.5"
+            />
           </div>
-          <span className="text-lg text-white hidden sm:inline">Admin</span>
+          <span className="text-lg text-white inline">Admin</span>
         </Link>
 
         {/* Desktop Navigation */}
