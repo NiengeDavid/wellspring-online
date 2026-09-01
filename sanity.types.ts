@@ -18,6 +18,150 @@ import type { ProjectionBase } from "groq";
 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
+export type PointsTransaction = {
+  _id: string;
+  _type: "pointsTransaction";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  student?: string;
+  amount?: number;
+  type?: "quiz_earn" | "redemption_spend";
+  relatedQuizAttempt?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "quizAttempt";
+  };
+  note?: string;
+};
+
+export type QuizAttempt = {
+  _id: string;
+  _type: "quizAttempt";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  quiz?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "quiz";
+  };
+  student?: string;
+  answers?: Array<{
+    questionKey?: string;
+    isCorrect?: boolean;
+    pointsAwarded?: number;
+    submittedValue?: string;
+    _type: "gradedAnswer";
+    _key: string;
+  }>;
+  scorePercent?: number;
+  passed?: boolean;
+  totalPointsAwarded?: number;
+  completedAt?: string;
+};
+
+export type Quiz = {
+  _id: string;
+  _type: "quiz";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  lesson?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "lesson";
+  };
+  module?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "module";
+  };
+  course?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "course";
+  };
+  passingScorePercent?: number;
+  questions?: Array<
+    | ({
+        _key: string;
+      } & MultipleChoiceQuestion)
+    | ({
+        _key: string;
+      } & SelectAllQuestion)
+    | ({
+        _key: string;
+      } & FillInQuestion)
+    | ({
+        _key: string;
+      } & OrderingQuestion)
+    | ({
+        _key: string;
+      } & MatchingQuestion)
+  >;
+};
+
+export type MatchingQuestion = {
+  _type: "matchingQuestion";
+  prompt?: string;
+  points?: number;
+  pairs?: Array<{
+    left?: string;
+    right?: string;
+    _type: "pair";
+    _key: string;
+  }>;
+};
+
+export type OrderingQuestion = {
+  _type: "orderingQuestion";
+  prompt?: string;
+  points?: number;
+  items?: Array<{
+    text?: string;
+    _type: "item";
+    _key: string;
+  }>;
+};
+
+export type FillInQuestion = {
+  _type: "fillInQuestion";
+  prompt?: string;
+  points?: number;
+  acceptableAnswers?: Array<string>;
+};
+
+export type SelectAllQuestion = {
+  _type: "selectAllQuestion";
+  prompt?: string;
+  points?: number;
+  options?: Array<{
+    text?: string;
+    isCorrect?: boolean;
+    _type: "option";
+    _key: string;
+  }>;
+};
+
+export type MultipleChoiceQuestion = {
+  _type: "multipleChoiceQuestion";
+  prompt?: string;
+  points?: number;
+  options?: Array<{
+    text?: string;
+    isCorrect?: boolean;
+    _type: "option";
+    _key: string;
+  }>;
+};
+
 export type Note = {
   _id: string;
   _type: "note";
@@ -172,7 +316,6 @@ export type Course = {
   }>;
   featured?: boolean;
   completedBy?: Array<string>;
-  lessonCount?: number;
 };
 
 export type Category = {
@@ -370,6 +513,14 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | PointsTransaction
+  | QuizAttempt
+  | Quiz
+  | MatchingQuestion
+  | OrderingQuestion
+  | FillInQuestion
+  | SelectAllQuestion
+  | MultipleChoiceQuestion
   | Note
   | Lesson
   | SanityImageCrop
@@ -397,6 +548,14 @@ export type AllSanitySchemaTypes =
 // Source: ./schema.json
 // Schema ID: default
 export type DefaultSchema =
+  | PointsTransaction
+  | QuizAttempt
+  | Quiz
+  | MatchingQuestion
+  | OrderingQuestion
+  | FillInQuestion
+  | SelectAllQuestion
+  | MultipleChoiceQuestion
   | Note
   | Lesson
   | SanityImageCrop
@@ -436,7 +595,7 @@ export type FEATURED_COURSES_QUERYResult = Array<{
   slug: Slug | null;
   description: string | null;
   tier: "free" | "pro" | "ultra" | null;
-  featured: boolean | null;
+  featured: true;
   thumbnail: {
     asset: {
       _id: string;
