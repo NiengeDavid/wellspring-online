@@ -489,6 +489,16 @@
           }
         },
         "optional": true
+      },
+      "completedBy": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "string"
+          }
+        },
+        "optional": true
       }
     }
   },

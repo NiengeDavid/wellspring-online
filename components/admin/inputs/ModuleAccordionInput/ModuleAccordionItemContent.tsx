@@ -1,21 +1,13 @@
 "use client";
 
-import { Suspense, useState } from "react";
-import Link from "next/link";
 import {
-  useDocument,
-  useEditDocument,
-  useDocuments,
-  useDocumentProjection,
-} from "@sanity/sdk-react";
-import {
-  DndContext,
   closestCenter,
+  DndContext,
+  type DragEndEvent,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
-  type DragEndEvent,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -25,7 +17,20 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Skeleton } from "@/components/ui/skeleton";
+import {
+  useDocument,
+  useDocumentProjection,
+  useDocuments,
+  useEditDocument,
+} from "@sanity/sdk-react";
+import { ExternalLink, GripVertical, Layers, Plus, X } from "lucide-react";
+import Link from "next/link";
+import { Suspense, useState } from "react";
+import {
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -34,14 +39,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { X, Plus, GripVertical, ExternalLink, Layers } from "lucide-react";
-import { SortableLessonItem } from "./SortableLessonItem";
+import { Skeleton } from "@/components/ui/skeleton";
 import { LessonOptionLabel } from "./OptionLabels";
+import { SortableLessonItem } from "./SortableLessonItem";
 import type { SanityReference } from "./types";
 
 interface ModuleAccordionItemContentProps {
@@ -156,7 +156,9 @@ export function ModuleAccordionItemContent({
   };
 
   const handleRemoveLesson = (lessonRef: string) => {
-    editLessons(lessons.filter((l) => l._ref !== lessonRef) as SanityReference[]);
+    editLessons(
+      lessons.filter((l) => l._ref !== lessonRef) as SanityReference[],
+    );
   };
 
   const lessonSortableIds = lessons.map((l) => l._key ?? l._ref);
@@ -294,4 +296,3 @@ export function ModuleAccordionItemContent({
     </div>
   );
 }
-

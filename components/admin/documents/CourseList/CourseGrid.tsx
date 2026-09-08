@@ -1,7 +1,7 @@
 "use client";
 
-import { Suspense } from "react";
 import { useDocuments } from "@sanity/sdk-react";
+import { Suspense } from "react";
 import { EmptyState } from "@/components/admin/shared";
 import { DocumentCardSkeleton } from "@/components/admin/shared/DocumentSkeleton";
 import { AdminCourseItem } from "./AdminCourseItem";
@@ -50,4 +50,3 @@ export function CourseGrid({
     </div>
   );
 }
-

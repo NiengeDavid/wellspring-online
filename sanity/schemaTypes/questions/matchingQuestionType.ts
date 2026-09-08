@@ -10,18 +10,23 @@ export const matchingQuestionType = defineType({
     defineField({
       name: "prompt",
       type: "text",
-      validation: (Rule) => [Rule.required().error("Question prompt is required")],
+      validation: (Rule) => [
+        Rule.required().error("Question prompt is required"),
+      ],
     }),
     defineField({
       name: "points",
       type: "number",
       initialValue: 10,
-      validation: (Rule) => [Rule.required().min(1).error("Points must be at least 1")],
+      validation: (Rule) => [
+        Rule.required().min(1).error("Points must be at least 1"),
+      ],
     }),
     defineField({
       name: "pairs",
       type: "array",
-      description: "Each row is a correct pair, e.g. left: \"useState\" right: \"manages local state\".",
+      description:
+        'Each row is a correct pair, e.g. left: "useState" right: "manages local state".',
       of: [
         defineArrayMember({
           type: "object",
@@ -30,12 +35,16 @@ export const matchingQuestionType = defineType({
             defineField({
               name: "left",
               type: "string",
-              validation: (Rule) => [Rule.required().error("Left side is required")],
+              validation: (Rule) => [
+                Rule.required().error("Left side is required"),
+              ],
             }),
             defineField({
               name: "right",
               type: "string",
-              validation: (Rule) => [Rule.required().error("Right side is required")],
+              validation: (Rule) => [
+                Rule.required().error("Right side is required"),
+              ],
             }),
           ],
           preview: {

@@ -1,28 +1,28 @@
 "use client";
 
+import { CheckCircle2, Circle, HelpCircle, Lock, Play } from "lucide-react";
 import Link from "next/link";
-import { CheckCircle2, Circle, Play } from "lucide-react";
-import { cn } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { buildModuleOutline } from "@/lib/module-items";
+import { cn } from "@/lib/utils";
 import type { LESSON_BY_ID_QUERYResult } from "@/sanity.types";
 
 // Infer types from Sanity query result
 type Course = NonNullable<LESSON_BY_ID_QUERYResult>["courses"][number];
 type CourseModules = Course["modules"];
 type Module = NonNullable<CourseModules>[number];
-type Lesson = NonNullable<Module["lessons"]>[number];
 
 interface LessonSidebarProps {
   courseSlug: string;
   courseTitle: string | null;
   modules: Module[] | null;
   currentLessonId: string;
-  completedLessonIds?: string[];
+  userId?: string | null;
 }
 
 export function LessonSidebar({
@@ -30,7 +30,7 @@ export function LessonSidebar({
   courseTitle,
   modules,
   currentLessonId,
-  completedLessonIds = [],
+  userId,
 }: LessonSidebarProps) {
   if (!modules || modules.length === 0) {
     return null;
@@ -65,11 +65,11 @@ export function LessonSidebar({
             className="w-full"
           >
             {modules.map((module, moduleIndex) => {
-              const lessonCount = module.lessons?.length ?? 0;
-              const completedCount =
-                module.lessons?.filter((l) =>
-                  completedLessonIds.includes(l._id),
-                ).length ?? 0;
+              const items = buildModuleOutline(module, userId ?? null);
+              const total = items.length;
+              const completedCount = items.filter(
+                (item) => item.completed,
+              ).length;
 
               return (
                 <AccordionItem
@@ -92,7 +92,7 @@ export function LessonSidebar({
                           {module.title ?? "Untitled Module"}
                         </p>
                         <p className="text-xs text-zinc-500">
-                          {completedCount}/{lessonCount} lessons
+                          {completedCount}/{total} items
                         </p>
                       </div>
                     </div>
@@ -100,16 +100,49 @@ export function LessonSidebar({
 
                   <AccordionContent className="pb-3 pt-1">
                     <div className="ml-4 border-l-2 border-zinc-800 pl-3 space-y-1">
-                      {module.lessons?.map((lesson, lessonIndex) => {
-                        const isActive = lesson._id === currentLessonId;
-                        const isCompleted = completedLessonIds.includes(
-                          lesson._id,
+                      {items.map((item) => {
+                        const isActive =
+                          item.type === "lesson" && item.id === currentLessonId;
+                        const href =
+                          item.type === "lesson"
+                            ? `/lessons/${item.slug}`
+                            : `/quizzes/${item.id}`;
+
+                        const rowContent = (
+                          <>
+                            {!item.unlocked ? (
+                              <Lock className="w-4 h-4 text-zinc-600 shrink-0" />
+                            ) : item.completed ? (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                            ) : isActive ? (
+                              <Play className="w-4 h-4 text-violet-400 shrink-0 fill-violet-400" />
+                            ) : (
+                              <Circle className="w-4 h-4 text-zinc-600 shrink-0" />
+                            )}
+                            <span className="truncate flex-1">
+                              {item.title}
+                            </span>
+                            {item.type === "quiz" && (
+                              <HelpCircle className="w-3.5 h-3.5 text-violet-400 shrink-0" />
+                            )}
+                          </>
                         );
+
+                        if (!item.unlocked) {
+                          return (
+                            <div
+                              key={item.id}
+                              className="flex items-center gap-2.5 pl-2 pr-3 py-2 rounded-lg text-sm text-zinc-600 cursor-not-allowed opacity-60"
+                            >
+                              {rowContent}
+                            </div>
+                          );
+                        }
 
                         return (
                           <Link
-                            key={lesson._id}
-                            href={`/lessons/${lesson.slug!.current!}`}
+                            key={item.id}
+                            href={href}
                             className={cn(
                               "flex items-center gap-2.5 pl-2 pr-3 py-2 rounded-lg text-sm transition-colors",
                               isActive
@@ -117,16 +150,7 @@ export function LessonSidebar({
                                 : "text-zinc-400 hover:text-white hover:bg-zinc-800/50",
                             )}
                           >
-                            {isCompleted ? (
-                              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                            ) : isActive ? (
-                              <Play className="w-4 h-4 text-violet-400 shrink-0 fill-violet-400" />
-                            ) : (
-                              <Circle className="w-4 h-4 text-zinc-600 shrink-0" />
-                            )}
-                            <span className="truncate">
-                              {lesson.title ?? "Untitled Lesson"}
-                            </span>
+                            {rowContent}
                           </Link>
                         );
                       })}

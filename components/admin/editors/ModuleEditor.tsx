@@ -1,14 +1,15 @@
 "use client";
 
-import { Suspense } from "react";
 import type { DocumentHandle } from "@sanity/sdk-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useDocument, useEditDocument } from "@sanity/sdk-react";
-import { ReferenceArrayInput } from "@/components/admin/inputs/ReferenceArrayInput";
+import { Suspense } from "react";
 import { DocumentActions } from "@/components/admin/documents/DocumentActions";
 import { OpenInStudio } from "@/components/admin/documents/OpenInStudio";
+import { ReferenceArrayInput } from "@/components/admin/inputs/ReferenceArrayInput";
+import { LinkedQuizCard } from "@/components/admin/shared/LinkedQuizCard";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ModuleEditorProps {
   documentId: string;
@@ -90,6 +91,18 @@ function ModuleEditorContent({
           path="lessons"
           label="Lessons"
           referenceType="lesson"
+        />
+      </div>
+
+      {/* Quiz */}
+      <div className="bg-zinc-900/50 rounded-xl border border-zinc-800 p-6 mt-6">
+        <h3 className="text-sm font-medium text-zinc-400 mb-4">Quiz</h3>
+        <LinkedQuizCard
+          documentId={documentId}
+          documentType="module"
+          projectId={projectId}
+          dataset={dataset}
+          parentTitle={title || "Module"}
         />
       </div>
     </div>

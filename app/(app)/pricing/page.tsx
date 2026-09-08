@@ -1,15 +1,15 @@
-import Link from "next/link";
-import Image from "next/image";
 import { PricingTable } from "@clerk/nextjs";
 import {
   ArrowLeft,
   CheckCircle2,
-  Sparkles,
-  Loader2,
   Code2,
+  Loader2,
+  Sparkles,
 } from "lucide-react";
-import { TIER_FEATURES, getTierColorClasses } from "@/lib/constants";
+import Image from "next/image";
+import Link from "next/link";
 import { Header } from "@/components/Header";
+import { getTierColorClasses, TIER_FEATURES } from "@/lib/constants";
 
 const LogoImage = "/assets/logowhite.png";
 

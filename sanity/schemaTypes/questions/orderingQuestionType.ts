@@ -10,13 +10,17 @@ export const orderingQuestionType = defineType({
     defineField({
       name: "prompt",
       type: "text",
-      validation: (Rule) => [Rule.required().error("Question prompt is required")],
+      validation: (Rule) => [
+        Rule.required().error("Question prompt is required"),
+      ],
     }),
     defineField({
       name: "points",
       type: "number",
       initialValue: 10,
-      validation: (Rule) => [Rule.required().min(1).error("Points must be at least 1")],
+      validation: (Rule) => [
+        Rule.required().min(1).error("Points must be at least 1"),
+      ],
     }),
     defineField({
       name: "items",
@@ -31,7 +35,9 @@ export const orderingQuestionType = defineType({
             defineField({
               name: "text",
               type: "string",
-              validation: (Rule) => [Rule.required().error("Item text is required")],
+              validation: (Rule) => [
+                Rule.required().error("Item text is required"),
+              ],
             }),
           ],
           preview: {
@@ -41,7 +47,9 @@ export const orderingQuestionType = defineType({
       ],
       validation: (Rule) => [
         Rule.required().min(3).error("Add at least three items to order"),
-        Rule.max(8).warning("Keep to 8 or fewer items for a manageable drag list"),
+        Rule.max(8).warning(
+          "Keep to 8 or fewer items for a manageable drag list",
+        ),
       ],
     }),
   ],

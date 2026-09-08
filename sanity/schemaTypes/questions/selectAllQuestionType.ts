@@ -10,13 +10,17 @@ export const selectAllQuestionType = defineType({
     defineField({
       name: "prompt",
       type: "text",
-      validation: (Rule) => [Rule.required().error("Question prompt is required")],
+      validation: (Rule) => [
+        Rule.required().error("Question prompt is required"),
+      ],
     }),
     defineField({
       name: "points",
       type: "number",
       initialValue: 10,
-      validation: (Rule) => [Rule.required().min(1).error("Points must be at least 1")],
+      validation: (Rule) => [
+        Rule.required().min(1).error("Points must be at least 1"),
+      ],
     }),
     defineField({
       name: "options",
@@ -29,7 +33,9 @@ export const selectAllQuestionType = defineType({
             defineField({
               name: "text",
               type: "string",
-              validation: (Rule) => [Rule.required().error("Option text is required")],
+              validation: (Rule) => [
+                Rule.required().error("Option text is required"),
+              ],
             }),
             defineField({
               name: "isCorrect",
@@ -40,7 +46,9 @@ export const selectAllQuestionType = defineType({
           preview: {
             select: { title: "text", isCorrect: "isCorrect" },
             prepare({ title, isCorrect }) {
-              return { title: `${isCorrect ? "✅ " : ""}${title || "Untitled option"}` };
+              return {
+                title: `${isCorrect ? "✅ " : ""}${title || "Untitled option"}`,
+              };
             },
           },
         }),

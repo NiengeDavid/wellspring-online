@@ -1,34 +1,34 @@
 "use client";
 
-import {
-  useDecoratorButton,
-  useStyleSelector,
-  useListButton,
-  useToolbarSchema,
-  type ToolbarDecoratorSchemaType,
-  type ToolbarStyleSchemaType,
-  type ToolbarListSchemaType,
-  type ExtendDecoratorSchemaType,
-  type ExtendStyleSchemaType,
-  type ExtendListSchemaType,
-} from "@portabletext/toolbar";
-import { useEditor } from "@portabletext/editor";
 import type { PortableTextBlock } from "@portabletext/editor";
+import { useEditor } from "@portabletext/editor";
+import {
+  type ExtendDecoratorSchemaType,
+  type ExtendListSchemaType,
+  type ExtendStyleSchemaType,
+  type ToolbarDecoratorSchemaType,
+  type ToolbarListSchemaType,
+  type ToolbarStyleSchemaType,
+  useDecoratorButton,
+  useListButton,
+  useStyleSelector,
+  useToolbarSchema,
+} from "@portabletext/toolbar";
 import {
   Bold,
-  Italic,
-  Underline,
-  Strikethrough,
   Code,
-  List,
-  ListOrdered,
-  Quote,
   Heading1,
   Heading2,
   Heading3,
   Heading4,
-  Type,
   ImagePlus,
+  Italic,
+  List,
+  ListOrdered,
+  Quote,
+  Strikethrough,
+  Type,
+  Underline,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {

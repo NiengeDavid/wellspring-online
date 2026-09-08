@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { useDocumentProjection } from "@sanity/sdk-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useDocumentProjection } from "@sanity/sdk-react";
+import { ExternalLink, GripVertical, X } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { X, GripVertical, ExternalLink } from "lucide-react";
 
 interface SortableReferenceItemProps {
   id: string;

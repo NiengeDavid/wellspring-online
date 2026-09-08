@@ -41,7 +41,7 @@ export const courseType = defineType({
       description: "Compelling description of what students will learn",
       validation: (Rule) => [
         Rule.required().error(
-          "Description helps students understand the course"
+          "Description helps students understand the course",
         ),
         Rule.min(50).warning("Add more detail to help students decide"),
         Rule.max(1000).warning("Keep descriptions focused and scannable"),

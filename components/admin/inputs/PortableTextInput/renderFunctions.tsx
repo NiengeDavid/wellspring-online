@@ -1,12 +1,12 @@
 import type {
-  RenderStyleFunction,
-  RenderDecoratorFunction,
-  RenderBlockFunction,
-  RenderListItemFunction,
   RenderAnnotationFunction,
+  RenderBlockFunction,
+  RenderDecoratorFunction,
+  RenderListItemFunction,
+  RenderStyleFunction,
 } from "@portabletext/editor";
-import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
+import { urlFor } from "@/sanity/lib/image";
 
 /**
  * Render function for block styles (headings, blockquotes, etc.)

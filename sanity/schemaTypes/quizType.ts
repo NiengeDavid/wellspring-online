@@ -1,4 +1,4 @@
-import { HelpCircleIcon } from "@sanity/icons";
+import { HelpCircleIcon, UserIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const quizType = defineType({
@@ -9,6 +9,7 @@ export const quizType = defineType({
   groups: [
     { name: "details", title: "Details", icon: HelpCircleIcon, default: true },
     { name: "questions", title: "Questions" },
+    { name: "completion", title: "Completed By", icon: UserIcon },
   ],
   fields: [
     defineField({
@@ -22,21 +23,24 @@ export const quizType = defineType({
       type: "reference",
       group: "details",
       to: [{ type: "lesson" }],
-      description: "Attach this quiz to a lesson. Leave empty for a module or course-level quiz.",
+      description:
+        "Attach this quiz to a lesson. Leave empty for a module or course-level quiz.",
     }),
     defineField({
       name: "module",
       type: "reference",
       group: "details",
       to: [{ type: "module" }],
-      description: "Attach this quiz to a module (e.g. a module review). Leave empty otherwise.",
+      description:
+        "Attach this quiz to a module (e.g. a module review). Leave empty otherwise.",
     }),
     defineField({
       name: "course",
       type: "reference",
       group: "details",
       to: [{ type: "course" }],
-      description: "Attach this quiz to a whole course (e.g. a final exam). Leave empty otherwise.",
+      description:
+        "Attach this quiz to a whole course (e.g. a final exam). Leave empty otherwise.",
     }),
     defineField({
       name: "passingScorePercent",
@@ -44,7 +48,10 @@ export const quizType = defineType({
       group: "details",
       initialValue: 70,
       validation: (Rule) => [
-        Rule.required().min(0).max(100).error("Passing score must be between 0 and 100"),
+        Rule.required()
+          .min(0)
+          .max(100)
+          .error("Passing score must be between 0 and 100"),
       ],
     }),
     defineField({
@@ -58,7 +65,17 @@ export const quizType = defineType({
         defineArrayMember({ type: "orderingQuestion" }),
         defineArrayMember({ type: "matchingQuestion" }),
       ],
-      validation: (Rule) => [Rule.required().min(1).error("Add at least one question")],
+      validation: (Rule) => [
+        Rule.required().min(1).error("Add at least one question"),
+      ],
+    }),
+    defineField({
+      name: "completedBy",
+      type: "array",
+      group: "completion",
+      description: "List of user IDs who have passed this quiz",
+      of: [defineArrayMember({ type: "string" })],
+      readOnly: true,
     }),
   ],
   preview: {
@@ -70,7 +87,8 @@ export const quizType = defineType({
       questions: "questions",
     },
     prepare({ title, lessonTitle, moduleTitle, courseTitle, questions }) {
-      const attachedTo = lessonTitle || moduleTitle || courseTitle || "Unattached";
+      const attachedTo =
+        lessonTitle || moduleTitle || courseTitle || "Unattached";
       const questionCount = questions?.length ?? 0;
       return {
         title: title || "Untitled Quiz",

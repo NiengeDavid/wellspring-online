@@ -1,19 +1,27 @@
 "use client";
 
+import { BookOpen, ChevronLeft, ChevronRight, Lock } from "lucide-react";
 import Link from "next/link";
-import { BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { GatedFallback } from "@/components/courses/GatedFallback";
-import { useUserTier, hasTierAccess } from "@/lib/hooks/use-user-tier";
-import { MuxVideoPlayer } from "./MuxVideoPlayer";
-import { LessonContent } from "./LessonContent";
-import { LessonCompleteButton } from "./LessonCompleteButton";
-import { LessonSidebar } from "./LessonSidebar";
+import { LockedFallback } from "@/components/quiz";
+import { Button } from "@/components/ui/button";
+import { hasTierAccess, useUserTier } from "@/lib/hooks/use-user-tier";
+import { buildModuleOutline, type ModuleOutlineItem } from "@/lib/module-items";
 import type { LESSON_BY_ID_QUERYResult } from "@/sanity.types";
+import { LessonCompleteButton } from "./LessonCompleteButton";
+import { LessonContent } from "./LessonContent";
+import { LessonSidebar } from "./LessonSidebar";
+import { MuxVideoPlayer } from "./MuxVideoPlayer";
 
 interface LessonPageContentProps {
   lesson: NonNullable<LESSON_BY_ID_QUERYResult>;
   userId: string | null;
+}
+
+function itemHref(item: ModuleOutlineItem): string {
+  return item.type === "lesson"
+    ? `/lessons/${item.slug}`
+    : `/quizzes/${item.id}`;
 }
 
 export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
@@ -35,37 +43,24 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
     ? (lesson.completedBy?.includes(userId) ?? false)
     : false;
 
-  // Find previous and next lessons for navigation
-  const modules = activeCourse?.modules;
-  let prevLesson: { id: string; slug: string; title: string } | null = null;
-  let nextLesson: { id: string; slug: string; title: string } | null = null;
-  const completedLessonIds: string[] = [];
+  // Flatten every module's outline (lessons + their quizzes + the module's own quiz)
+  // into one ordered list, so prev/next navigation can move across lesson AND quiz items.
+  const modules = activeCourse?.modules ?? [];
+  const allItems: ModuleOutlineItem[] = modules.flatMap((module) =>
+    buildModuleOutline(module, userId ?? null),
+  );
 
-  if (modules) {
-    const allLessons: Array<{ id: string; slug: string; title: string }> = [];
+  const currentIndex = allItems.findIndex(
+    (item) => item.type === "lesson" && item.id === lesson._id,
+  );
+  const currentItem = currentIndex >= 0 ? allItems[currentIndex] : undefined;
+  const isLocked = currentItem ? !currentItem.unlocked : false;
 
-    for (const module of modules) {
-      if (module.lessons) {
-        for (const l of module.lessons) {
-          allLessons.push({
-            id: l._id,
-            slug: l.slug!.current!,
-            title: l.title ?? "Untitled Lesson",
-          });
-          if (userId && l.completedBy?.includes(userId)) {
-            completedLessonIds.push(l._id);
-          }
-        }
-      }
-    }
-
-    const currentIndex = allLessons.findIndex((l) => l.id === lesson._id);
-    prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
-    nextLesson =
-      currentIndex < allLessons.length - 1
-        ? allLessons[currentIndex + 1]
-        : null;
-  }
+  const prevItem = currentIndex > 0 ? allItems[currentIndex - 1] : null;
+  const nextItem =
+    currentIndex >= 0 && currentIndex < allItems.length - 1
+      ? allItems[currentIndex + 1]
+      : null;
 
   return (
     <div className="flex flex-col lg:flex-row gap-8">
@@ -76,13 +71,24 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
           courseTitle={activeCourse.title}
           modules={activeCourse.modules ?? null}
           currentLessonId={lesson._id}
-          completedLessonIds={completedLessonIds}
+          userId={userId}
         />
       )}
 
       {/* Main content area */}
       <div className="flex-1 min-w-0">
-        {hasAccess ? (
+        {!hasAccess ? (
+          <GatedFallback requiredTier={activeCourse?.tier} />
+        ) : isLocked ? (
+          <LockedFallback
+            backHref={
+              activeCourse
+                ? `/courses/${activeCourse.slug!.current!}`
+                : "/dashboard"
+            }
+            backLabel="Back to Course"
+          />
+        ) : (
           <>
             {/* Video Player */}
             {lesson.video?.asset?.playbackId && (
@@ -124,16 +130,16 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
               </div>
             )}
 
-            {/* Navigation between lessons */}
+            {/* Navigation between lessons/quizzes */}
             <div className="flex items-center justify-between pt-6 border-t border-zinc-800">
-              {prevLesson ? (
-                <Link href={`/lessons/${prevLesson.slug}`}>
+              {prevItem ? (
+                <Link href={itemHref(prevItem)}>
                   <Button
                     variant="ghost"
                     className="text-zinc-400 hover:text-white hover:bg-zinc-800"
                   >
                     <ChevronLeft className="w-4 h-4 mr-2" />
-                    <span className="hidden sm:inline">{prevLesson.title}</span>
+                    <span className="hidden sm:inline">{prevItem.title}</span>
                     <span className="sm:hidden">Previous</span>
                   </Button>
                 </Link>
@@ -141,21 +147,34 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
                 <div />
               )}
 
-              {nextLesson ? (
-                <Link href={`/lessons/${nextLesson.slug}`}>
-                  <Button className="bg-violet-600 hover:bg-violet-500 text-white">
-                    <span className="hidden sm:inline">{nextLesson.title}</span>
-                    <span className="sm:hidden">Next</span>
-                    <ChevronRight className="w-4 h-4 ml-2" />
+              {nextItem ? (
+                nextItem.unlocked ? (
+                  <Link href={itemHref(nextItem)}>
+                    <Button className="bg-violet-600 hover:bg-violet-500 text-white">
+                      <span className="hidden sm:inline">{nextItem.title}</span>
+                      <span className="sm:hidden">Next</span>
+                      <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button
+                    disabled
+                    variant="outline"
+                    className="border-zinc-700 text-zinc-500"
+                    title="Complete this lesson to continue"
+                  >
+                    <Lock className="w-4 h-4 mr-2" />
+                    <span className="hidden sm:inline">
+                      Complete to continue
+                    </span>
+                    <span className="sm:hidden">Locked</span>
                   </Button>
-                </Link>
+                )
               ) : (
                 <div />
               )}
             </div>
           </>
-        ) : (
-          <GatedFallback requiredTier={activeCourse?.tier} />
         )}
       </div>
     </div>

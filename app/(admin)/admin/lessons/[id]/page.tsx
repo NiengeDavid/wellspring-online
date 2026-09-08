@@ -2,7 +2,7 @@
 
 import { use } from "react";
 import { LessonEditor } from "@/components/admin/editors/LessonEditor";
-import { projectId, dataset } from "@/sanity/env";
+import { dataset, projectId } from "@/sanity/env";
 
 export default function EditLessonPage({
   params,

@@ -22,7 +22,8 @@ export const quizAttemptType = defineType({
     defineField({
       name: "answers",
       type: "array",
-      description: "Graded answers, one per question, keyed to the question's _key on the quiz",
+      description:
+        "Graded answers, one per question, keyed to the question's _key on the quiz",
       of: [
         defineArrayMember({
           type: "object",
@@ -34,7 +35,8 @@ export const quizAttemptType = defineType({
             defineField({
               name: "submittedValue",
               type: "text",
-              description: "JSON-stringified submitted answer, for review/audit",
+              description:
+                "JSON-stringified submitted answer, for review/audit",
             }),
           ],
         }),

@@ -1,25 +1,25 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Header } from "@/components/Header";
-import { CourseCard } from "@/components/courses";
+import { currentUser } from "@clerk/nextjs/server";
 import {
   ArrowRight,
-  Play,
   BookOpen,
-  Code2,
-  Rocket,
-  Crown,
   CheckCircle2,
-  Star,
-  Users,
-  Trophy,
-  Sparkles,
+  Code2,
+  Crown,
   LayoutDashboard,
+  Play,
+  Rocket,
+  Sparkles,
+  Star,
+  Trophy,
+  Users,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { CourseCard } from "@/components/courses";
+import { Header } from "@/components/Header";
+import { Button } from "@/components/ui/button";
 import { sanityFetch } from "@/sanity/lib/live";
 import { FEATURED_COURSES_QUERY, STATS_QUERY } from "@/sanity/lib/queries";
-import { currentUser } from "@clerk/nextjs/server";
 import type { Course } from "@/sanity.types";
 
 const LogoImage = "/assets/logowhite.png";
@@ -430,8 +430,7 @@ export default async function Home() {
               </Link>
             </div>
             <p className="text-sm text-zinc-600">
-              © {new Date().getFullYear()} Wellspring ILC. All rights
-              reserved.
+              © {new Date().getFullYear()} Wellspring ILC. All rights reserved.
             </p>
           </div>
         </footer>

@@ -1,33 +1,33 @@
 "use client";
 
-import { Suspense, useState, useRef, useCallback, useEffect } from "react";
-import {
-  useDocument,
-  useEditDocument,
-  type DocumentHandle,
-} from "@sanity/sdk-react";
 import {
   EditorProvider,
-  PortableTextEditable,
   keyGenerator,
   type PortableTextBlock,
+  PortableTextEditable,
 } from "@portabletext/editor";
 import { EventListenerPlugin } from "@portabletext/editor/plugins";
-import { Label } from "@/components/ui/label";
-import { Skeleton } from "@/components/ui/skeleton";
+import {
+  type DocumentHandle,
+  useDocument,
+  useEditDocument,
+} from "@sanity/sdk-react";
+import { ImageIcon, Loader2, Upload, X } from "lucide-react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { X, Loader2, ImageIcon, Upload } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 import { uploadImage } from "@/lib/actions/images";
+import {
+  renderAnnotation,
+  renderBlock,
+  renderDecorator,
+  renderListItem,
+  renderStyle,
+} from "./renderFunctions";
 import { schemaDefinition } from "./schema";
 import { Toolbar } from "./Toolbar";
-import {
-  renderStyle,
-  renderDecorator,
-  renderBlock,
-  renderListItem,
-  renderAnnotation,
-} from "./renderFunctions";
 
 interface PortableTextInputProps extends DocumentHandle {
   path: string;

@@ -21,4 +21,3 @@ export interface CourseModulesData {
 }
 
 export type ModuleItemProps = DocumentHandle & { index?: number };
-

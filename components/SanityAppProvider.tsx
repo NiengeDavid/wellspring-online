@@ -12,7 +12,6 @@ function SanityAppProvider({ children }: { children: React.ReactNode }) {
         {
           projectId,
           dataset,
-          studio: {},
           auth: {
             callbackUrl: `${appUrl}/admin`,
           },

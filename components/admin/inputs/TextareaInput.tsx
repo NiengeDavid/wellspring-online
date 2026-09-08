@@ -1,14 +1,14 @@
 "use client";
 
-import { Suspense } from "react";
 import {
+  type DocumentHandle,
   useDocument,
   useEditDocument,
-  type DocumentHandle,
 } from "@sanity/sdk-react";
-import { Textarea } from "@/components/ui/textarea";
+import { Suspense } from "react";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 
 interface TextareaInputProps extends DocumentHandle {
   path: string;
@@ -73,5 +73,3 @@ export function TextareaInput(props: TextareaInputProps) {
     </Suspense>
   );
 }
-
-

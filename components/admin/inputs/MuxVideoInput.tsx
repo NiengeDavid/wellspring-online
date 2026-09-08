@@ -1,21 +1,21 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import MuxPlayer from "@mux/mux-player-react";
+import MuxUploader from "@mux/mux-uploader-react";
 import {
+  type DocumentHandle,
   useDocument,
   useEditDocument,
-  type DocumentHandle,
 } from "@sanity/sdk-react";
-import MuxUploader from "@mux/mux-uploader-react";
-import MuxPlayer from "@mux/mux-player-react";
-import { Label } from "@/components/ui/label";
+import { Loader2, RefreshCw, Trash2, Upload, XCircle } from "lucide-react";
+import { Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import { XCircle, Loader2, RefreshCw, Trash2, Upload } from "lucide-react";
 import {
   createMuxUploadUrl,
-  getMuxUploadStatus,
   getMuxSignedTokens,
+  getMuxUploadStatus,
 } from "@/lib/actions/mux";
 
 interface MuxVideoInputProps extends DocumentHandle {

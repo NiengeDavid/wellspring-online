@@ -1,14 +1,14 @@
 "use client";
 
-import { Suspense } from "react";
-import { useDocumentProjection, type DocumentHandle } from "@sanity/sdk-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { type DocumentHandle, useDocumentProjection } from "@sanity/sdk-react";
 import { Layers } from "lucide-react";
+import { Suspense } from "react";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Skeleton } from "@/components/ui/skeleton";
 import { LessonItem } from "./LessonItem";
 import type { ModuleLessonsData } from "./types";
 

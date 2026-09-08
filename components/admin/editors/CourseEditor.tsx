@@ -1,19 +1,20 @@
 "use client";
 
-import { Suspense } from "react";
 import type { DocumentHandle } from "@sanity/sdk-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useDocument, useEditDocument } from "@sanity/sdk-react";
-import { SelectInput } from "@/components/admin/inputs/SelectInput";
-import { SwitchInput } from "@/components/admin/inputs/SwitchInput";
-import { ReferenceInput } from "@/components/admin/inputs/ReferenceInput";
-import { ModuleAccordionInput } from "@/components/admin/inputs/ModuleAccordionInput";
-import { ImageInput } from "@/components/admin/inputs/ImageInput";
-import { SlugInput } from "@/components/admin/inputs/SlugInput";
+import { Suspense } from "react";
 import { DocumentActions } from "@/components/admin/documents/DocumentActions";
 import { OpenInStudio } from "@/components/admin/documents/OpenInStudio";
+import { ImageInput } from "@/components/admin/inputs/ImageInput";
+import { ModuleAccordionInput } from "@/components/admin/inputs/ModuleAccordionInput";
+import { ReferenceInput } from "@/components/admin/inputs/ReferenceInput";
+import { SelectInput } from "@/components/admin/inputs/SelectInput";
+import { SlugInput } from "@/components/admin/inputs/SlugInput";
+import { SwitchInput } from "@/components/admin/inputs/SwitchInput";
+import { LinkedQuizCard } from "@/components/admin/shared/LinkedQuizCard";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 import { TIER_OPTIONS } from "@/lib/constants";
 
 interface CourseEditorProps {
@@ -128,6 +129,16 @@ function CourseEditorContent({
             label="URL Slug"
             sourceField="title"
           />
+          <div className="pt-1 border-t border-zinc-800">
+            <p className="text-xs font-medium text-zinc-500 mb-2 mt-4">Final Exam</p>
+            <LinkedQuizCard
+              documentId={documentId}
+              documentType="course"
+              projectId={projectId}
+              dataset={dataset}
+              parentTitle={title || "Course"}
+            />
+          </div>
         </div>
       </div>
     </div>

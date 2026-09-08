@@ -1,12 +1,12 @@
-import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
+import { ArrowRight, BookOpen, Sparkles } from "lucide-react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
-import { BookOpen, Sparkles, ArrowRight } from "lucide-react";
-import { Header } from "@/components/Header";
 import { CourseList } from "@/components/courses";
+import { Header } from "@/components/Header";
+import { getUserTier } from "@/lib/course-access";
 import { sanityFetch } from "@/sanity/lib/live";
 import { DASHBOARD_COURSES_QUERY } from "@/sanity/lib/queries";
-import { getUserTier } from "@/lib/course-access";
 
 export default async function DashboardPage() {
   const user = await currentUser();

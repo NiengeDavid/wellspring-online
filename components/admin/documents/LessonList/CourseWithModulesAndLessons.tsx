@@ -1,15 +1,15 @@
 "use client";
 
-import { Suspense } from "react";
-import { useDocumentProjection, type DocumentHandle } from "@sanity/sdk-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { type DocumentHandle, useDocumentProjection } from "@sanity/sdk-react";
 import { BookOpen } from "lucide-react";
+import { Suspense } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ModuleWithLessons } from "./ModuleWithLessons";
 import type { CourseModulesData } from "./types";
 
@@ -81,4 +81,3 @@ export function CourseWithModulesAndLessons({
     </AccordionItem>
   );
 }
-
