@@ -1,4 +1,5 @@
 import { clerkClient } from "@clerk/nextjs/server";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { ChildActivityView } from "@/components/parent/ChildActivityView";
@@ -29,7 +30,13 @@ export default async function ChildPage({ params }: ChildPageProps) {
     <div className="min-h-screen bg-[#09090b] text-white overflow-hidden">
       <Header />
       <main className="relative z-10 px-6 lg:px-12 py-12 max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">{childName}'s Progress</h1>
+        <Link
+          href="/parent"
+          className="text-sm text-zinc-400 hover:text-white transition-colors"
+        >
+          ← Back to Parent Portal
+        </Link>
+        <h1 className="text-3xl font-bold my-8">{childName}'s Progress</h1>
         <ChildActivityView activity={activity} />
       </main>
     </div>

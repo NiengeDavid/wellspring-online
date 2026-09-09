@@ -1,5 +1,4 @@
 import { BookOpen, CheckCircle2, Sparkles, XCircle } from "lucide-react";
-import Link from "next/link";
 import type { getChildActivity } from "@/lib/actions/parent";
 
 type ChildActivity = NonNullable<Awaited<ReturnType<typeof getChildActivity>>>;
@@ -87,13 +86,6 @@ export function ChildActivityView({ activity }: ChildActivityViewProps) {
           <p className="text-sm text-zinc-500">No quizzes attempted yet.</p>
         )}
       </div>
-
-      <Link
-        href="/parent"
-        className="text-sm text-zinc-400 hover:text-white transition-colors"
-      >
-        ← Back to Parent Portal
-      </Link>
     </div>
   );
 }

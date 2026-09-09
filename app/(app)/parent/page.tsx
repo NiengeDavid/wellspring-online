@@ -1,11 +1,16 @@
 import { Users } from "lucide-react";
 import { Header } from "@/components/Header";
 import { ChildrenList } from "@/components/parent/ChildrenList";
+import { IncomingParentRequests } from "@/components/parent/IncomingParentRequests";
 import { InviteChildForm } from "@/components/parent/InviteChildForm";
-import { getParentDashboardData } from "@/lib/actions";
+import {
+  getIncomingParentRequests,
+  getParentDashboardData,
+} from "@/lib/actions";
 
 export default async function ParentPortalPage() {
-  const { pendingInvites, children } = await getParentDashboardData();
+  const [{ pendingInvites, children }, { pendingRequests, approvedParents }] =
+    await Promise.all([getParentDashboardData(), getIncomingParentRequests()]);
 
   return (
     <div className="min-h-screen bg-[#09090b] text-white overflow-hidden">
@@ -45,13 +50,18 @@ export default async function ParentPortalPage() {
           <InviteChildForm />
         </div>
 
-        <div>
+        <div className="mb-8">
           <h2 className="text-lg font-semibold mb-4">Your Children</h2>
           <ChildrenList
             linkedChildren={children}
             pendingInvites={pendingInvites}
           />
         </div>
+
+        <IncomingParentRequests
+          pendingRequests={pendingRequests}
+          approvedParents={approvedParents}
+        />
       </main>
     </div>
   );

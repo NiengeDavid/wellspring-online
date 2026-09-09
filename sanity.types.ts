@@ -1148,6 +1148,16 @@ export type PARENT_LINK_BY_TOKEN_QUERYResult = {
 } | null;
 
 // Source: ./sanity/lib/queries.ts
+// Variable: PARENT_LINKS_FOR_CHILD_QUERY
+// Query: *[  _type == "parentLink"  && (    (status == "pending" && childEmail in $emails)    || (status == "accepted" && child == $childId)  )] | order(_createdAt desc) {  _id,  parent,  childEmail,  status}
+export type PARENT_LINKS_FOR_CHILD_QUERYResult = Array<{
+  _id: string;
+  parent: string | null;
+  childEmail: string | null;
+  status: "accepted" | "pending" | null;
+}>;
+
+// Source: ./sanity/lib/queries.ts
 // Variable: PARENT_LINK_FOR_CHILD_QUERY
 // Query: *[  _type == "parentLink"  && parent == $parentId  && child == $childId  && status == "accepted"][0] {  _id}
 export type PARENT_LINK_FOR_CHILD_QUERYResult = {
@@ -1188,6 +1198,7 @@ declare module "@sanity/client" {
     '*[\n  _type == "pointsTransaction"\n  && student == $studentId\n] | order(_createdAt desc) {\n  _id,\n  amount,\n  type,\n  note,\n  _createdAt\n}': POINTS_TRANSACTIONS_FOR_STUDENT_QUERYResult;
     '*[\n  _type == "parentLink"\n  && parent == $parentId\n] | order(_createdAt desc) {\n  _id,\n  childEmail,\n  child,\n  status,\n  token\n}': PARENT_LINKS_FOR_PARENT_QUERYResult;
     '*[\n  _type == "parentLink"\n  && token == $inviteToken\n][0] {\n  _id,\n  parent,\n  childEmail,\n  child,\n  status\n}': PARENT_LINK_BY_TOKEN_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && (\n    (status == "pending" && childEmail in $emails)\n    || (status == "accepted" && child == $childId)\n  )\n] | order(_createdAt desc) {\n  _id,\n  parent,\n  childEmail,\n  status\n}': PARENT_LINKS_FOR_CHILD_QUERYResult;
     '*[\n  _type == "parentLink"\n  && parent == $parentId\n  && child == $childId\n  && status == "accepted"\n][0] {\n  _id\n}': PARENT_LINK_FOR_CHILD_QUERYResult;
     '*[\n  _type == "course"\n  && $lessonId in modules[]->lessons[]->_id\n][0] {\n  _id,\n  title,\n  tier,\n  modules[]-> {\n    _id,\n    title,\n    lessons[]-> {\n      _id,\n      title\n    }\n  }\n}': LESSON_NAVIGATION_QUERYResult;
   }
@@ -1210,6 +1221,7 @@ declare module "groq" {
     '*[\n  _type == "pointsTransaction"\n  && student == $studentId\n] | order(_createdAt desc) {\n  _id,\n  amount,\n  type,\n  note,\n  _createdAt\n}': POINTS_TRANSACTIONS_FOR_STUDENT_QUERYResult;
     '*[\n  _type == "parentLink"\n  && parent == $parentId\n] | order(_createdAt desc) {\n  _id,\n  childEmail,\n  child,\n  status,\n  token\n}': PARENT_LINKS_FOR_PARENT_QUERYResult;
     '*[\n  _type == "parentLink"\n  && token == $inviteToken\n][0] {\n  _id,\n  parent,\n  childEmail,\n  child,\n  status\n}': PARENT_LINK_BY_TOKEN_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && (\n    (status == "pending" && childEmail in $emails)\n    || (status == "accepted" && child == $childId)\n  )\n] | order(_createdAt desc) {\n  _id,\n  parent,\n  childEmail,\n  status\n}': PARENT_LINKS_FOR_CHILD_QUERYResult;
     '*[\n  _type == "parentLink"\n  && parent == $parentId\n  && child == $childId\n  && status == "accepted"\n][0] {\n  _id\n}': PARENT_LINK_FOR_CHILD_QUERYResult;
     '*[\n  _type == "course"\n  && $lessonId in modules[]->lessons[]->_id\n][0] {\n  _id,\n  title,\n  tier,\n  modules[]-> {\n    _id,\n    title,\n    lessons[]-> {\n      _id,\n      title\n    }\n  }\n}': LESSON_NAVIGATION_QUERYResult;
   }

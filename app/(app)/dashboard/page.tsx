@@ -1,9 +1,10 @@
 import { currentUser } from "@clerk/nextjs/server";
-import { ArrowRight, BookOpen, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, Sparkles, Star } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CourseList } from "@/components/courses";
 import { Header } from "@/components/Header";
+import { getStudentQuizActivity } from "@/lib/actions";
 import { getUserTier } from "@/lib/course-access";
 import { sanityFetch } from "@/sanity/lib/live";
 import { DASHBOARD_COURSES_QUERY } from "@/sanity/lib/queries";
@@ -15,12 +16,13 @@ export default async function DashboardPage() {
     redirect("/");
   }
 
-  const [{ data: courses }, userTier] = await Promise.all([
+  const [{ data: courses }, userTier, { pointsBalance }] = await Promise.all([
     sanityFetch({
       query: DASHBOARD_COURSES_QUERY,
       params: { userId: user.id },
     }),
     getUserTier(),
+    getStudentQuizActivity(user.id),
   ]);
 
   const firstName = user.firstName ?? user.username ?? "there";
@@ -80,7 +82,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
           <div className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
@@ -101,6 +103,18 @@ export default async function DashboardPage() {
               <div>
                 <p className="text-2xl font-bold capitalize">{userTier}</p>
                 <p className="text-sm text-zinc-500">Current Plan</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                <Star className="w-5 h-5 text-amber-400" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{pointsBalance}</p>
+                <p className="text-sm text-zinc-500">Points Earned</p>
               </div>
             </div>
           </div>

@@ -415,6 +415,7 @@ export async function submitQuizAttempt(
 
   await transaction.commit();
 
+  revalidatePath(`/quizzes/${quizId}`);
   if (quiz.lesson?.slug) revalidatePath(`/lessons/${quiz.lesson.slug}`);
   if (quiz.course?.slug) revalidatePath(`/courses/${quiz.course.slug}`);
   revalidatePath("/dashboard");

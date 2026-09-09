@@ -9,11 +9,28 @@ import {
   DASHBOARD_COURSES_QUERY,
   PARENT_LINK_BY_TOKEN_QUERY,
   PARENT_LINK_FOR_CHILD_QUERY,
+  PARENT_LINKS_FOR_CHILD_QUERY,
   PARENT_LINKS_FOR_PARENT_QUERY,
 } from "@/sanity/lib/queries";
 import { getStudentQuizActivity } from "./quizzes";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+async function notifyParent(
+  parentId: string,
+  subject: string,
+  html: string,
+): Promise<void> {
+  try {
+    const client = await clerkClient();
+    const parent = await client.users.getUser(parentId);
+    const parentEmail = parent.emailAddresses[0]?.emailAddress;
+    if (!parentEmail) return;
+    await sendEmail({ to: parentEmail, subject, html });
+  } catch (error) {
+    console.error("Failed to notify parent:", error);
+  }
+}
 
 export async function inviteChild(
   childEmail: string,
@@ -101,6 +118,7 @@ export async function getParentDashboardData() {
           childId: link.child as string,
           name: user.firstName || user.username || link.childEmail || "Student",
           email: link.childEmail,
+          imageUrl: user.imageUrl,
         };
       } catch {
         return {
@@ -108,6 +126,7 @@ export async function getParentDashboardData() {
           childId: link.child as string,
           name: link.childEmail || "Student",
           email: link.childEmail,
+          imageUrl: null,
         };
       }
     }),
@@ -230,4 +249,131 @@ export async function getChildActivity(childId: string) {
     ),
     ...quizActivity,
   };
+}
+
+interface IncomingRequest {
+  linkId: string;
+  parentName: string;
+  parentEmail: string | null;
+}
+
+async function withParentInfo(link: {
+  _id: string;
+  parent: string | null;
+}): Promise<IncomingRequest> {
+  try {
+    const client = await clerkClient();
+    const parentUser = await client.users.getUser(link.parent as string);
+    return {
+      linkId: link._id,
+      parentName: parentUser.firstName || parentUser.username || "A parent",
+      parentEmail: parentUser.emailAddresses[0]?.emailAddress ?? null,
+    };
+  } catch {
+    return { linkId: link._id, parentName: "A parent", parentEmail: null };
+  }
+}
+
+export async function getIncomingParentRequests(): Promise<{
+  pendingRequests: IncomingRequest[];
+  approvedParents: IncomingRequest[];
+}> {
+  const user = await currentUser();
+  if (!user) {
+    return { pendingRequests: [], approvedParents: [] };
+  }
+
+  const emails = user.emailAddresses.map((e) => e.emailAddress.toLowerCase());
+
+  const { data: links } = await sanityFetch({
+    query: PARENT_LINKS_FOR_CHILD_QUERY,
+    params: { emails, childId: user.id },
+  });
+
+  const pending = (links ?? []).filter((l) => l.status === "pending");
+  const accepted = (links ?? []).filter((l) => l.status === "accepted");
+
+  const [pendingRequests, approvedParents] = await Promise.all([
+    Promise.all(pending.map(withParentInfo)),
+    Promise.all(accepted.map(withParentInfo)),
+  ]);
+
+  return { pendingRequests, approvedParents };
+}
+
+export async function approveIncomingRequest(
+  linkId: string,
+): Promise<{ success: true } | { success: false; error: string }> {
+  const user = await currentUser();
+  if (!user) {
+    return { success: false, error: "You must be signed in." };
+  }
+
+  const emails = user.emailAddresses.map((e) => e.emailAddress.toLowerCase());
+
+  const doc = await writeClient.fetch<{
+    parent: string;
+    childEmail: string | null;
+    status: string;
+  } | null>(`*[_id == $id][0]{ parent, childEmail, status }`, { id: linkId });
+
+  if (
+    !doc ||
+    doc.status !== "pending" ||
+    !emails.includes((doc.childEmail ?? "").toLowerCase())
+  ) {
+    return { success: false, error: "Request not found." };
+  }
+
+  await writeClient
+    .patch(linkId)
+    .set({ status: "accepted", child: user.id })
+    .commit();
+
+  const childName = user.firstName || user.username || "Your child";
+  await notifyParent(
+    doc.parent,
+    `${childName} approved your request on Wellspring's Academy`,
+    `<p>${childName} approved your request to follow their progress on Wellspring's Academy. You can now view it from your Parent Portal.</p>`,
+  );
+
+  revalidatePath("/parent");
+  return { success: true };
+}
+
+export async function denyIncomingRequest(
+  linkId: string,
+): Promise<{ success: true } | { success: false; error: string }> {
+  const user = await currentUser();
+  if (!user) {
+    return { success: false, error: "You must be signed in." };
+  }
+
+  const emails = user.emailAddresses.map((e) => e.emailAddress.toLowerCase());
+
+  const doc = await writeClient.fetch<{
+    parent: string;
+    childEmail: string | null;
+    status: string;
+  } | null>(`*[_id == $id][0]{ parent, childEmail, status }`, { id: linkId });
+
+  if (
+    !doc ||
+    doc.status !== "pending" ||
+    !emails.includes((doc.childEmail ?? "").toLowerCase())
+  ) {
+    return { success: false, error: "Request not found." };
+  }
+
+  await writeClient.delete(linkId);
+
+  const childName = user.firstName || user.username || "Your child";
+  await notifyParent(
+    doc.parent,
+    `${childName} declined your request on Wellspring's Academy`,
+    `<p>${childName} declined your request to follow their progress on Wellspring's Academy.</p>`,
+  );
+
+  revalidatePath("/parent");
+  return { success: true };
 }

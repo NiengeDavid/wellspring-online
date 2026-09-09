@@ -233,7 +233,7 @@ export function QuizPlayer({
           <Button
             onClick={handleSubmit}
             disabled={isPending}
-            className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0"
+            className="bg-linear-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0"
           >
             {isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
             Submit Quiz

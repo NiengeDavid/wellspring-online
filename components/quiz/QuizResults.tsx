@@ -92,9 +92,9 @@ export function QuizResults({
         <Button
           onClick={onRetake}
           variant="outline"
-          className="border-zinc-700 text-zinc-200 hover:bg-zinc-800"
+          className="bg-purple-700 border-purple-700 text-zinc-200 cursor-pointer hover:bg-purple-800"
         >
-          <RotateCcw className="h-4 w-4 mr-2" />
+          <RotateCcw className="h-4 w-4 mr-1" />
           Retake Quiz
         </Button>
       </div>

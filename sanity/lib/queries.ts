@@ -363,6 +363,19 @@ export const PARENT_LINK_BY_TOKEN_QUERY = defineQuery(`*[
   status
 }`);
 
+export const PARENT_LINKS_FOR_CHILD_QUERY = defineQuery(`*[
+  _type == "parentLink"
+  && (
+    (status == "pending" && childEmail in $emails)
+    || (status == "accepted" && child == $childId)
+  )
+] | order(_createdAt desc) {
+  _id,
+  parent,
+  childEmail,
+  status
+}`);
+
 export const PARENT_LINK_FOR_CHILD_QUERY = defineQuery(`*[
   _type == "parentLink"
   && parent == $parentId
