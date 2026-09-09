@@ -4,6 +4,7 @@ import { courseType } from "./courseType";
 import { lessonType } from "./lessonType";
 import { moduleType } from "./moduleType";
 import { noteType } from "./noteType";
+import { parentLinkType } from "./parentLinkType";
 import { pointsTransactionType } from "./pointsTransactionType";
 import { fillInQuestionType } from "./questions/fillInQuestionType";
 import { matchingQuestionType } from "./questions/matchingQuestionType";
@@ -28,5 +29,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     quizType,
     quizAttemptType,
     pointsTransactionType,
+    parentLinkType,
   ],
 };

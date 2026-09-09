@@ -18,6 +18,19 @@ import type { ProjectionBase } from "groq";
 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
+export type ParentLink = {
+  _id: string;
+  _type: "parentLink";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  parent?: string;
+  childEmail?: string;
+  child?: string;
+  status?: "pending" | "accepted";
+  token?: string;
+};
+
 export type PointsTransaction = {
   _id: string;
   _type: "pointsTransaction";
@@ -514,6 +527,7 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | ParentLink
   | PointsTransaction
   | QuizAttempt
   | Quiz
@@ -549,6 +563,7 @@ export type AllSanitySchemaTypes =
 // Source: ./schema.json
 // Schema ID: default
 export type DefaultSchema =
+  | ParentLink
   | PointsTransaction
   | QuizAttempt
   | Quiz
@@ -1111,6 +1126,35 @@ export type POINTS_TRANSACTIONS_FOR_STUDENT_QUERYResult = Array<{
 }>;
 
 // Source: ./sanity/lib/queries.ts
+// Variable: PARENT_LINKS_FOR_PARENT_QUERY
+// Query: *[  _type == "parentLink"  && parent == $parentId] | order(_createdAt desc) {  _id,  childEmail,  child,  status,  token}
+export type PARENT_LINKS_FOR_PARENT_QUERYResult = Array<{
+  _id: string;
+  childEmail: string | null;
+  child: string | null;
+  status: "accepted" | "pending" | null;
+  token: string | null;
+}>;
+
+// Source: ./sanity/lib/queries.ts
+// Variable: PARENT_LINK_BY_TOKEN_QUERY
+// Query: *[  _type == "parentLink"  && token == $inviteToken][0] {  _id,  parent,  childEmail,  child,  status}
+export type PARENT_LINK_BY_TOKEN_QUERYResult = {
+  _id: string;
+  parent: string | null;
+  childEmail: string | null;
+  child: string | null;
+  status: "accepted" | "pending" | null;
+} | null;
+
+// Source: ./sanity/lib/queries.ts
+// Variable: PARENT_LINK_FOR_CHILD_QUERY
+// Query: *[  _type == "parentLink"  && parent == $parentId  && child == $childId  && status == "accepted"][0] {  _id}
+export type PARENT_LINK_FOR_CHILD_QUERYResult = {
+  _id: string;
+} | null;
+
+// Source: ./sanity/lib/queries.ts
 // Variable: LESSON_NAVIGATION_QUERY
 // Query: *[  _type == "course"  && $lessonId in modules[]->lessons[]->_id][0] {  _id,  title,  tier,  modules[]-> {    _id,    title,    lessons[]-> {      _id,      title    }  }}
 export type LESSON_NAVIGATION_QUERYResult = {
@@ -1142,6 +1186,9 @@ declare module "@sanity/client" {
     '*[\n  _type == "quizAttempt"\n  && quiz._ref == $quizId\n  && student == $studentId\n] | order(completedAt desc)[0] {\n  scorePercent,\n  passed,\n  totalPointsAwarded,\n  answers[] { questionKey, isCorrect, pointsAwarded }\n}': QUIZ_LATEST_ATTEMPT_QUERYResult;
     '*[\n  _type == "quizAttempt"\n  && student == $studentId\n] | order(completedAt desc) {\n  _id,\n  quiz-> { _id, title },\n  scorePercent,\n  passed,\n  totalPointsAwarded,\n  completedAt\n}': QUIZ_ATTEMPTS_FOR_STUDENT_QUERYResult;
     '*[\n  _type == "pointsTransaction"\n  && student == $studentId\n] | order(_createdAt desc) {\n  _id,\n  amount,\n  type,\n  note,\n  _createdAt\n}': POINTS_TRANSACTIONS_FOR_STUDENT_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && parent == $parentId\n] | order(_createdAt desc) {\n  _id,\n  childEmail,\n  child,\n  status,\n  token\n}': PARENT_LINKS_FOR_PARENT_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && token == $inviteToken\n][0] {\n  _id,\n  parent,\n  childEmail,\n  child,\n  status\n}': PARENT_LINK_BY_TOKEN_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && parent == $parentId\n  && child == $childId\n  && status == "accepted"\n][0] {\n  _id\n}': PARENT_LINK_FOR_CHILD_QUERYResult;
     '*[\n  _type == "course"\n  && $lessonId in modules[]->lessons[]->_id\n][0] {\n  _id,\n  title,\n  tier,\n  modules[]-> {\n    _id,\n    title,\n    lessons[]-> {\n      _id,\n      title\n    }\n  }\n}': LESSON_NAVIGATION_QUERYResult;
   }
 }
@@ -1161,6 +1208,9 @@ declare module "groq" {
     '*[\n  _type == "quizAttempt"\n  && quiz._ref == $quizId\n  && student == $studentId\n] | order(completedAt desc)[0] {\n  scorePercent,\n  passed,\n  totalPointsAwarded,\n  answers[] { questionKey, isCorrect, pointsAwarded }\n}': QUIZ_LATEST_ATTEMPT_QUERYResult;
     '*[\n  _type == "quizAttempt"\n  && student == $studentId\n] | order(completedAt desc) {\n  _id,\n  quiz-> { _id, title },\n  scorePercent,\n  passed,\n  totalPointsAwarded,\n  completedAt\n}': QUIZ_ATTEMPTS_FOR_STUDENT_QUERYResult;
     '*[\n  _type == "pointsTransaction"\n  && student == $studentId\n] | order(_createdAt desc) {\n  _id,\n  amount,\n  type,\n  note,\n  _createdAt\n}': POINTS_TRANSACTIONS_FOR_STUDENT_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && parent == $parentId\n] | order(_createdAt desc) {\n  _id,\n  childEmail,\n  child,\n  status,\n  token\n}': PARENT_LINKS_FOR_PARENT_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && token == $inviteToken\n][0] {\n  _id,\n  parent,\n  childEmail,\n  child,\n  status\n}': PARENT_LINK_BY_TOKEN_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && parent == $parentId\n  && child == $childId\n  && status == "accepted"\n][0] {\n  _id\n}': PARENT_LINK_FOR_CHILD_QUERYResult;
     '*[\n  _type == "course"\n  && $lessonId in modules[]->lessons[]->_id\n][0] {\n  _id,\n  title,\n  tier,\n  modules[]-> {\n    _id,\n    title,\n    lessons[]-> {\n      _id,\n      title\n    }\n  }\n}': LESSON_NAVIGATION_QUERYResult;
   }
 }

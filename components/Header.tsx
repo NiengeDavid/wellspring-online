@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   SignedIn,
   SignedOut,
@@ -9,6 +7,10 @@ import {
   UserButton,
   useAuth,
 } from "@clerk/nextjs";
+import { BookOpen, LayoutDashboard, Menu, Sparkles, Users } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,16 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Code2,
-  Play,
-  LayoutDashboard,
-  BookOpen,
-  Sparkles,
-  Menu,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 const loggedOutLinks = [
   { href: "#courses", label: "Courses" },
@@ -44,6 +37,7 @@ export function Header() {
   const loggedInLinks = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/dashboard/courses", label: "My Courses", icon: BookOpen },
+    { href: "/parent", label: "Parent Portal", icon: Users },
     // Show "Account" for Ultra users, "Upgrade" for others
     ...(isUltra
       ? [{ href: "/pricing", label: "Account", icon: Sparkles }]

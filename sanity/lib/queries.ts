@@ -341,6 +341,37 @@ export const POINTS_TRANSACTIONS_FOR_STUDENT_QUERY = defineQuery(`*[
   _createdAt
 }`);
 
+export const PARENT_LINKS_FOR_PARENT_QUERY = defineQuery(`*[
+  _type == "parentLink"
+  && parent == $parentId
+] | order(_createdAt desc) {
+  _id,
+  childEmail,
+  child,
+  status,
+  token
+}`);
+
+export const PARENT_LINK_BY_TOKEN_QUERY = defineQuery(`*[
+  _type == "parentLink"
+  && token == $inviteToken
+][0] {
+  _id,
+  parent,
+  childEmail,
+  child,
+  status
+}`);
+
+export const PARENT_LINK_FOR_CHILD_QUERY = defineQuery(`*[
+  _type == "parentLink"
+  && parent == $parentId
+  && child == $childId
+  && status == "accepted"
+][0] {
+  _id
+}`);
+
 export const LESSON_NAVIGATION_QUERY = defineQuery(`*[
   _type == "course"
   && $lessonId in modules[]->lessons[]->_id

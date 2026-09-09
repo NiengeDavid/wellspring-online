@@ -9,3 +9,10 @@ export {
   getStudentQuizActivity,
   submitQuizAttempt,
 } from "./quizzes";
+export {
+  acceptInvite,
+  getChildActivity,
+  getParentDashboardData,
+  inviteChild,
+  removeChildLink,
+} from "./parent";
