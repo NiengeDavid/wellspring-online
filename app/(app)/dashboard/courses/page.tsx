@@ -1,8 +1,8 @@
 import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import { BookOpen } from "lucide-react";
-import { Header } from "@/components/Header";
+import { redirect } from "next/navigation";
 import { CourseCard } from "@/components/courses";
+import { Header } from "@/components/Header";
 import { sanityFetch } from "@/sanity/lib/live";
 import { DASHBOARD_COURSES_QUERY } from "@/sanity/lib/queries";
 

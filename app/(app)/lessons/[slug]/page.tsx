@@ -1,5 +1,5 @@
-import { notFound } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
+import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { LessonPageContent } from "@/components/lessons";
 import { sanityFetch } from "@/sanity/lib/live";

@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import type { DocumentHandle } from "@sanity/sdk-react";
 import { ExternalLink } from "lucide-react";
+import Link from "next/link";
 
 interface OpenInStudioProps {
   handle: DocumentHandle;

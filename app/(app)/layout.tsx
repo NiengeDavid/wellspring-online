@@ -1,6 +1,6 @@
-import { SanityLive } from "@/sanity/lib/live";
 import { ClerkProvider } from "@clerk/nextjs";
 import { TutorWidget } from "@/components/tutor";
+import { SanityLive } from "@/sanity/lib/live";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -1,14 +1,14 @@
 "use client";
 
-import { Suspense } from "react";
 import type { DocumentHandle } from "@sanity/sdk-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useDocument, useEditDocument } from "@sanity/sdk-react";
+import { Suspense } from "react";
 import { DocumentActions } from "@/components/admin/documents/DocumentActions";
 import { OpenInStudio } from "@/components/admin/documents/OpenInStudio";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 
 interface CategoryEditorProps {
   documentId: string;

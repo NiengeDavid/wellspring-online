@@ -1,11 +1,11 @@
 "use client";
 
-import { Suspense } from "react";
 import {
+  type DocumentHandle,
   useDocument,
   useEditDocument,
-  type DocumentHandle,
 } from "@sanity/sdk-react";
+import { Suspense } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -63,5 +63,3 @@ export function StringInput(props: StringInputProps) {
     </Suspense>
   );
 }
-
-

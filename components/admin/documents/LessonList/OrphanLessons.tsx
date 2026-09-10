@@ -1,9 +1,9 @@
 "use client";
 
-import { Suspense } from "react";
 import type { DocumentHandle } from "@sanity/sdk-react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Play } from "lucide-react";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { LessonItem } from "./LessonItem";
 
 interface OrphanLessonsProps {
@@ -39,4 +39,3 @@ export function OrphanLessons({ documents }: OrphanLessonsProps) {
     </div>
   );
 }
-

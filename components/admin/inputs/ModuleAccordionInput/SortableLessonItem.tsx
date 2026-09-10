@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { useDocumentProjection } from "@sanity/sdk-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useDocumentProjection } from "@sanity/sdk-react";
+import { ExternalLink, GripVertical, PlayCircle, X } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { X, GripVertical, ExternalLink, PlayCircle } from "lucide-react";
 
 interface SortableLessonItemProps {
   id: string;
@@ -85,4 +85,3 @@ export function SortableLessonItem({
     </div>
   );
 }
-

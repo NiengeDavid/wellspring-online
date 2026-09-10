@@ -1,6 +1,6 @@
+import { auth } from "@clerk/nextjs/server";
 import { createAgentUIStreamResponse, type UIMessage } from "ai";
 import { tutorAgent } from "@/lib/ai/tutor-agent";
-import { auth } from "@clerk/nextjs/server";
 
 export async function POST(request: Request) {
   // Verify user is authenticated and has Ultra plan

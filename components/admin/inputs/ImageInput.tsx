@@ -1,19 +1,19 @@
 "use client";
 
-import { Suspense, useRef, useState } from "react";
 import {
+  type DocumentHandle,
   useDocument,
   useEditDocument,
-  type DocumentHandle,
 } from "@sanity/sdk-react";
-import { Label } from "@/components/ui/label";
+import { ImageIcon, Loader2, Upload, X } from "lucide-react";
+import Image from "next/image";
+import { Suspense, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ImageIcon, Upload, X, Loader2 } from "lucide-react";
 import { uploadImage } from "@/lib/actions/images";
 import { urlFor } from "@/sanity/lib/image";
 import type { Course } from "@/sanity.types";
-import Image from "next/image";
 
 interface ImageInputProps extends DocumentHandle {
   path: string;

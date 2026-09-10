@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useDocumentProjection } from "@sanity/sdk-react";
+import { BookOpen, ChevronRight, Layers } from "lucide-react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, BookOpen, Layers } from "lucide-react";
-import type { ModuleItemProps, ModuleData } from "./types";
+import type { ModuleData, ModuleItemProps } from "./types";
 
 export function ModuleItem({
   documentId,

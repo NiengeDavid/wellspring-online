@@ -1,19 +1,19 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   BookOpen,
+  ExternalLink,
+  HelpCircle,
   Layers,
+  LayoutDashboard,
+  Menu,
   PlayCircle,
   Tag,
-  LayoutDashboard,
-  Code2,
-  Menu,
-  ExternalLink,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import AdminLogOutButton from "./AdminLogOutButton";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,18 +21,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { cn } from "@/lib/utils";
+import AdminLogOutButton from "./AdminLogOutButton";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/courses", label: "Courses", icon: BookOpen },
   { href: "/admin/modules", label: "Modules", icon: Layers },
   { href: "/admin/lessons", label: "Lessons", icon: PlayCircle },
+  { href: "/admin/quizzes", label: "Quizzes", icon: HelpCircle },
   { href: "/admin/categories", label: "Categories", icon: Tag },
 ];
 
-const logo = '/assets/logomark512.png';
+const logo = "/assets/logomark512.png";
 
 function AdminHeader() {
   const pathname = usePathname();
@@ -51,7 +52,7 @@ function AdminHeader() {
           className="flex items-center gap-2.5 font-semibold lg:mr-8"
         >
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-linear-to-br from-violet-500 to-fuchsia-600 shadow-lg shadow-violet-500/20">
-            <Image 
+            <Image
               src={logo}
               alt="Logo"
               width={28}

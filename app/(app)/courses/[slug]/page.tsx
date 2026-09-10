@@ -1,7 +1,7 @@
-import { notFound } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
-import { Header } from "@/components/Header";
+import { notFound } from "next/navigation";
 import { CourseContent } from "@/components/courses";
+import { Header } from "@/components/Header";
 import { sanityFetch } from "@/sanity/lib/live";
 import { COURSE_WITH_MODULES_QUERY } from "@/sanity/lib/queries";
 
@@ -55,4 +55,3 @@ export default async function CoursePage({ params }: CoursePageProps) {
     </div>
   );
 }
-

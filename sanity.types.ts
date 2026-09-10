@@ -18,6 +18,164 @@ import type { ProjectionBase } from "groq";
 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
+export type ParentLink = {
+  _id: string;
+  _type: "parentLink";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  parent?: string;
+  childEmail?: string;
+  child?: string;
+  status?: "pending" | "accepted";
+  token?: string;
+};
+
+export type PointsTransaction = {
+  _id: string;
+  _type: "pointsTransaction";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  student?: string;
+  amount?: number;
+  type?: "quiz_earn" | "redemption_spend";
+  relatedQuizAttempt?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "quizAttempt";
+  };
+  note?: string;
+};
+
+export type QuizAttempt = {
+  _id: string;
+  _type: "quizAttempt";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  quiz?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "quiz";
+  };
+  student?: string;
+  answers?: Array<{
+    questionKey?: string;
+    isCorrect?: boolean;
+    pointsAwarded?: number;
+    submittedValue?: string;
+    _type: "gradedAnswer";
+    _key: string;
+  }>;
+  scorePercent?: number;
+  passed?: boolean;
+  totalPointsAwarded?: number;
+  completedAt?: string;
+};
+
+export type Quiz = {
+  _id: string;
+  _type: "quiz";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  lesson?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "lesson";
+  };
+  module?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "module";
+  };
+  course?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "course";
+  };
+  passingScorePercent?: number;
+  questions?: Array<
+    | ({
+        _key: string;
+      } & MultipleChoiceQuestion)
+    | ({
+        _key: string;
+      } & SelectAllQuestion)
+    | ({
+        _key: string;
+      } & FillInQuestion)
+    | ({
+        _key: string;
+      } & OrderingQuestion)
+    | ({
+        _key: string;
+      } & MatchingQuestion)
+  >;
+  completedBy?: Array<string>;
+};
+
+export type MatchingQuestion = {
+  _type: "matchingQuestion";
+  prompt?: string;
+  points?: number;
+  pairs?: Array<{
+    left?: string;
+    right?: string;
+    _type: "pair";
+    _key: string;
+  }>;
+};
+
+export type OrderingQuestion = {
+  _type: "orderingQuestion";
+  prompt?: string;
+  points?: number;
+  items?: Array<{
+    text?: string;
+    _type: "item";
+    _key: string;
+  }>;
+};
+
+export type FillInQuestion = {
+  _type: "fillInQuestion";
+  prompt?: string;
+  points?: number;
+  acceptableAnswers?: Array<string>;
+};
+
+export type SelectAllQuestion = {
+  _type: "selectAllQuestion";
+  prompt?: string;
+  points?: number;
+  options?: Array<{
+    text?: string;
+    isCorrect?: boolean;
+    _type: "option";
+    _key: string;
+  }>;
+};
+
+export type MultipleChoiceQuestion = {
+  _type: "multipleChoiceQuestion";
+  prompt?: string;
+  points?: number;
+  options?: Array<{
+    text?: string;
+    isCorrect?: boolean;
+    _type: "option";
+    _key: string;
+  }>;
+};
+
 export type Note = {
   _id: string;
   _type: "note";
@@ -172,7 +330,6 @@ export type Course = {
   }>;
   featured?: boolean;
   completedBy?: Array<string>;
-  lessonCount?: number;
 };
 
 export type Category = {
@@ -370,6 +527,15 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | ParentLink
+  | PointsTransaction
+  | QuizAttempt
+  | Quiz
+  | MatchingQuestion
+  | OrderingQuestion
+  | FillInQuestion
+  | SelectAllQuestion
+  | MultipleChoiceQuestion
   | Note
   | Lesson
   | SanityImageCrop
@@ -397,6 +563,15 @@ export type AllSanitySchemaTypes =
 // Source: ./schema.json
 // Schema ID: default
 export type DefaultSchema =
+  | ParentLink
+  | PointsTransaction
+  | QuizAttempt
+  | Quiz
+  | MatchingQuestion
+  | OrderingQuestion
+  | FillInQuestion
+  | SelectAllQuestion
+  | MultipleChoiceQuestion
   | Note
   | Lesson
   | SanityImageCrop
@@ -436,7 +611,7 @@ export type FEATURED_COURSES_QUERYResult = Array<{
   slug: Slug | null;
   description: string | null;
   tier: "free" | "pro" | "ultra" | null;
-  featured: boolean | null;
+  featured: true;
   thumbnail: {
     asset: {
       _id: string;
@@ -571,7 +746,7 @@ export type DASHBOARD_COURSES_QUERYResult = Array<{
 
 // Source: ./sanity/lib/queries.ts
 // Variable: COURSE_WITH_MODULES_QUERY
-// Query: *[  _type == "course"  && slug.current == $slug][0] {  _id,  title,  slug,  description,  tier,  featured,  thumbnail {    asset-> {      _id,      url    }  },  category-> {    _id,    title  },  modules[]-> {    _id,    title,    description,    completedBy,    lessons[]-> {      _id,      title,      slug,      description,      completedBy,      video {        asset-> {          playbackId        }      }    }  },  completedBy,  "moduleCount": count(modules),  "lessonCount": count(modules[]->lessons[]),  "completedLessonCount": count(modules[]->lessons[]->completedBy[@==$userId])}
+// Query: *[  _type == "course"  && slug.current == $slug][0] {  _id,  title,  slug,  description,  tier,  featured,  thumbnail {    asset-> {      _id,      url    }  },  category-> {    _id,    title  },  modules[]-> {    _id,    title,    description,    completedBy,    "quiz": *[_type == "quiz" && module._ref == ^._id][0] { _id, title, completedBy },    lessons[]-> {      _id,      title,      slug,      description,      completedBy,      "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title, completedBy },      video {        asset-> {          playbackId        }      }    }  },  completedBy,  "quiz": *[_type == "quiz" && course._ref == ^._id][0] { _id, title },  "moduleCount": count(modules),  "lessonCount": count(modules[]->lessons[]),  "completedLessonCount": count(modules[]->lessons[]->completedBy[@==$userId])}
 export type COURSE_WITH_MODULES_QUERYResult = {
   _id: string;
   title: string | null;
@@ -594,12 +769,22 @@ export type COURSE_WITH_MODULES_QUERYResult = {
     title: string | null;
     description: string | null;
     completedBy: Array<string> | null;
+    quiz: {
+      _id: string;
+      title: string | null;
+      completedBy: Array<string> | null;
+    } | null;
     lessons: Array<{
       _id: string;
       title: string | null;
       slug: Slug | null;
       description: string | null;
       completedBy: Array<string> | null;
+      quiz: {
+        _id: string;
+        title: string | null;
+        completedBy: Array<string> | null;
+      } | null;
       video: {
         asset: {
           playbackId: string | null;
@@ -608,6 +793,10 @@ export type COURSE_WITH_MODULES_QUERYResult = {
     }> | null;
   }> | null;
   completedBy: Array<string> | null;
+  quiz: {
+    _id: string;
+    title: string | null;
+  } | null;
   moduleCount: number | null;
   lessonCount: number | null;
   completedLessonCount: number | null;
@@ -615,7 +804,7 @@ export type COURSE_WITH_MODULES_QUERYResult = {
 
 // Source: ./sanity/lib/queries.ts
 // Variable: LESSON_BY_ID_QUERY
-// Query: *[  _type == "lesson"  && _id == $id][0] {  _id,  title,  slug,  description,  video {    asset-> {      playbackId,      status,      data {        duration      }    }  },  content,  completedBy,  "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(    select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)  ) {    _id,    title,    slug,    tier,    modules[]-> {      _id,      title,      lessons[]-> {        _id,        title,        slug,        completedBy      }    }  }}
+// Query: *[  _type == "lesson"  && _id == $id][0] {  _id,  title,  slug,  description,  video {    asset-> {      playbackId,      status,      data {        duration      }    }  },  content,  completedBy,  "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title },  "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(    select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)  ) {    _id,    title,    slug,    tier,    modules[]-> {      _id,      title,      "quiz": *[_type == "quiz" && module._ref == ^._id][0] { _id, title, completedBy },      lessons[]-> {        _id,        title,        slug,        completedBy,        "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title, completedBy }      }    }  }}
 export type LESSON_BY_ID_QUERYResult = {
   _id: string;
   title: string | null;
@@ -674,6 +863,10 @@ export type LESSON_BY_ID_QUERYResult = {
       }
   > | null;
   completedBy: Array<string> | null;
+  quiz: {
+    _id: string;
+    title: string | null;
+  } | null;
   courses: Array<{
     _id: string;
     title: string | null;
@@ -682,11 +875,21 @@ export type LESSON_BY_ID_QUERYResult = {
     modules: Array<{
       _id: string;
       title: string | null;
+      quiz: {
+        _id: string;
+        title: string | null;
+        completedBy: Array<string> | null;
+      } | null;
       lessons: Array<{
         _id: string;
         title: string | null;
         slug: Slug | null;
         completedBy: Array<string> | null;
+        quiz: {
+          _id: string;
+          title: string | null;
+          completedBy: Array<string> | null;
+        } | null;
       }> | null;
     }> | null;
   }>;
@@ -694,7 +897,7 @@ export type LESSON_BY_ID_QUERYResult = {
 
 // Source: ./sanity/lib/queries.ts
 // Variable: LESSON_BY_SLUG_QUERY
-// Query: *[  _type == "lesson"  && slug.current == $slug][0] {  _id,  title,  slug,  description,  video {    asset-> {      playbackId,      status,      data {        duration      }    }  },  content,  completedBy,  "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(    select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)  ) {    _id,    title,    slug,    tier,    modules[]-> {      _id,      title,      lessons[]-> {        _id,        title,        slug,        completedBy      }    }  }}
+// Query: *[  _type == "lesson"  && slug.current == $slug][0] {  _id,  title,  slug,  description,  video {    asset-> {      playbackId,      status,      data {        duration      }    }  },  content,  completedBy,  "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title },  "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(    select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)  ) {    _id,    title,    slug,    tier,    modules[]-> {      _id,      title,      "quiz": *[_type == "quiz" && module._ref == ^._id][0] { _id, title, completedBy },      lessons[]-> {        _id,        title,        slug,        completedBy,        "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title, completedBy }      }    }  }}
 export type LESSON_BY_SLUG_QUERYResult = {
   _id: string;
   title: string | null;
@@ -753,6 +956,10 @@ export type LESSON_BY_SLUG_QUERYResult = {
       }
   > | null;
   completedBy: Array<string> | null;
+  quiz: {
+    _id: string;
+    title: string | null;
+  } | null;
   courses: Array<{
     _id: string;
     title: string | null;
@@ -761,14 +968,201 @@ export type LESSON_BY_SLUG_QUERYResult = {
     modules: Array<{
       _id: string;
       title: string | null;
+      quiz: {
+        _id: string;
+        title: string | null;
+        completedBy: Array<string> | null;
+      } | null;
       lessons: Array<{
         _id: string;
         title: string | null;
         slug: Slug | null;
         completedBy: Array<string> | null;
+        quiz: {
+          _id: string;
+          title: string | null;
+          completedBy: Array<string> | null;
+        } | null;
       }> | null;
     }> | null;
   }>;
+} | null;
+
+// Source: ./sanity/lib/queries.ts
+// Variable: QUIZ_FULL_BY_ID_QUERY
+// Query: *[  _type == "quiz"  && _id == $id][0] {  _id,  title,  passingScorePercent,  completedBy,  "tier": coalesce(    course->tier,    *[_type == "course" && references(^.module._id)][0].tier,    *[_type == "course" && ^.lesson._id in modules[]->lessons[]->_id][0].tier,    "free"  ),  lesson-> { _id, "slug": slug.current, completedBy },  module-> {    _id,    lessons[]-> {      _id,      completedBy,      "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { completedBy }    }  },  course-> { _id, "slug": slug.current },  questions[] {    _key,    _type,    prompt,    points,    options[] { _key, text, isCorrect },    acceptableAnswers,    items[] { _key, text },    pairs[] { _key, left, right }  }}
+export type QUIZ_FULL_BY_ID_QUERYResult = {
+  _id: string;
+  title: string | null;
+  passingScorePercent: number | null;
+  completedBy: Array<string> | null;
+  tier: "free" | "pro" | "ultra";
+  lesson: {
+    _id: string;
+    slug: string | null;
+    completedBy: Array<string> | null;
+  } | null;
+  module: {
+    _id: string;
+    lessons: Array<{
+      _id: string;
+      completedBy: Array<string> | null;
+      quiz: {
+        completedBy: Array<string> | null;
+      } | null;
+    }> | null;
+  } | null;
+  course: {
+    _id: string;
+    slug: string | null;
+  } | null;
+  questions: Array<
+    | {
+        _key: string;
+        _type: "fillInQuestion";
+        prompt: string | null;
+        points: number | null;
+        options: null;
+        acceptableAnswers: Array<string> | null;
+        items: null;
+        pairs: null;
+      }
+    | {
+        _key: string;
+        _type: "matchingQuestion";
+        prompt: string | null;
+        points: number | null;
+        options: null;
+        acceptableAnswers: null;
+        items: null;
+        pairs: Array<{
+          _key: string;
+          left: string | null;
+          right: string | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "multipleChoiceQuestion";
+        prompt: string | null;
+        points: number | null;
+        options: Array<{
+          _key: string;
+          text: string | null;
+          isCorrect: boolean | null;
+        }> | null;
+        acceptableAnswers: null;
+        items: null;
+        pairs: null;
+      }
+    | {
+        _key: string;
+        _type: "orderingQuestion";
+        prompt: string | null;
+        points: number | null;
+        options: null;
+        acceptableAnswers: null;
+        items: Array<{
+          _key: string;
+          text: string | null;
+        }> | null;
+        pairs: null;
+      }
+    | {
+        _key: string;
+        _type: "selectAllQuestion";
+        prompt: string | null;
+        points: number | null;
+        options: Array<{
+          _key: string;
+          text: string | null;
+          isCorrect: boolean | null;
+        }> | null;
+        acceptableAnswers: null;
+        items: null;
+        pairs: null;
+      }
+  > | null;
+} | null;
+
+// Source: ./sanity/lib/queries.ts
+// Variable: QUIZ_LATEST_ATTEMPT_QUERY
+// Query: *[  _type == "quizAttempt"  && quiz._ref == $quizId  && student == $studentId] | order(completedAt desc)[0] {  _id,  scorePercent,  passed,  totalPointsAwarded,  answers[] { questionKey, isCorrect, pointsAwarded }}
+export type QUIZ_LATEST_ATTEMPT_QUERYResult = {
+  _id: string;
+  scorePercent: number | null;
+  passed: boolean | null;
+  totalPointsAwarded: number | null;
+  answers: Array<{
+    questionKey: string | null;
+    isCorrect: boolean | null;
+    pointsAwarded: number | null;
+  }> | null;
+} | null;
+
+// Source: ./sanity/lib/queries.ts
+// Variable: QUIZ_ATTEMPTS_FOR_STUDENT_QUERY
+// Query: *[  _type == "quizAttempt"  && student == $studentId] | order(completedAt desc) {  _id,  quiz-> { _id, title },  scorePercent,  passed,  totalPointsAwarded,  completedAt}
+export type QUIZ_ATTEMPTS_FOR_STUDENT_QUERYResult = Array<{
+  _id: string;
+  quiz: {
+    _id: string;
+    title: string | null;
+  } | null;
+  scorePercent: number | null;
+  passed: boolean | null;
+  totalPointsAwarded: number | null;
+  completedAt: string | null;
+}>;
+
+// Source: ./sanity/lib/queries.ts
+// Variable: POINTS_TRANSACTIONS_FOR_STUDENT_QUERY
+// Query: *[  _type == "pointsTransaction"  && student == $studentId] | order(_createdAt desc) {  _id,  amount,  type,  note,  _createdAt}
+export type POINTS_TRANSACTIONS_FOR_STUDENT_QUERYResult = Array<{
+  _id: string;
+  amount: number | null;
+  type: "quiz_earn" | "redemption_spend" | null;
+  note: string | null;
+  _createdAt: string;
+}>;
+
+// Source: ./sanity/lib/queries.ts
+// Variable: PARENT_LINKS_FOR_PARENT_QUERY
+// Query: *[  _type == "parentLink"  && parent == $parentId] | order(_createdAt desc) {  _id,  childEmail,  child,  status,  token}
+export type PARENT_LINKS_FOR_PARENT_QUERYResult = Array<{
+  _id: string;
+  childEmail: string | null;
+  child: string | null;
+  status: "accepted" | "pending" | null;
+  token: string | null;
+}>;
+
+// Source: ./sanity/lib/queries.ts
+// Variable: PARENT_LINK_BY_TOKEN_QUERY
+// Query: *[  _type == "parentLink"  && token == $inviteToken][0] {  _id,  parent,  childEmail,  child,  status}
+export type PARENT_LINK_BY_TOKEN_QUERYResult = {
+  _id: string;
+  parent: string | null;
+  childEmail: string | null;
+  child: string | null;
+  status: "accepted" | "pending" | null;
+} | null;
+
+// Source: ./sanity/lib/queries.ts
+// Variable: PARENT_LINKS_FOR_CHILD_QUERY
+// Query: *[  _type == "parentLink"  && (    (status == "pending" && childEmail in $emails)    || (status == "accepted" && child == $childId)  )] | order(_createdAt desc) {  _id,  parent,  childEmail,  status}
+export type PARENT_LINKS_FOR_CHILD_QUERYResult = Array<{
+  _id: string;
+  parent: string | null;
+  childEmail: string | null;
+  status: "accepted" | "pending" | null;
+}>;
+
+// Source: ./sanity/lib/queries.ts
+// Variable: PARENT_LINK_FOR_CHILD_QUERY
+// Query: *[  _type == "parentLink"  && parent == $parentId  && child == $childId  && status == "accepted"][0] {  _id}
+export type PARENT_LINK_FOR_CHILD_QUERYResult = {
+  _id: string;
 } | null;
 
 // Source: ./sanity/lib/queries.ts
@@ -796,9 +1190,17 @@ declare module "@sanity/client" {
     '*[\n  _type == "course"\n  && slug.current == $slug\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  tier,\n  featured,\n  thumbnail {\n    asset-> {\n      _id,\n      url\n    }\n  },\n  category-> {\n    _id,\n    title\n  },\n  modules[]-> {\n    _id,\n    title,\n    description,\n    lessons[]-> {\n      _id,\n      title,\n      slug\n    }\n  }\n}': COURSE_BY_SLUG_QUERYResult;
     '{\n  "courseCount": count(*[_type == "course"]),\n  "lessonCount": count(*[_type == "lesson"])\n}': STATS_QUERYResult;
     '*[\n  _type == "course"\n] | order(_createdAt desc) {\n  _id,\n  title,\n  slug,\n  description,\n  tier,\n  featured,\n  completedBy,\n  thumbnail {\n    asset-> {\n      _id,\n      url\n    }\n  },\n  category-> {\n    _id,\n    title\n  },\n  modules[]-> {\n    lessons[]-> {\n      completedBy\n    }\n  },\n  "moduleCount": count(modules),\n  "lessonCount": count(modules[]->lessons[])\n}': DASHBOARD_COURSES_QUERYResult;
-    '*[\n  _type == "course"\n  && slug.current == $slug\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  tier,\n  featured,\n  thumbnail {\n    asset-> {\n      _id,\n      url\n    }\n  },\n  category-> {\n    _id,\n    title\n  },\n  modules[]-> {\n    _id,\n    title,\n    description,\n    completedBy,\n    lessons[]-> {\n      _id,\n      title,\n      slug,\n      description,\n      completedBy,\n      video {\n        asset-> {\n          playbackId\n        }\n      }\n    }\n  },\n  completedBy,\n  "moduleCount": count(modules),\n  "lessonCount": count(modules[]->lessons[]),\n  "completedLessonCount": count(modules[]->lessons[]->completedBy[@==$userId])\n}': COURSE_WITH_MODULES_QUERYResult;
-    '*[\n  _type == "lesson"\n  && _id == $id\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  video {\n    asset-> {\n      playbackId,\n      status,\n      data {\n        duration\n      }\n    }\n  },\n  content,\n  completedBy,\n  "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(\n    select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)\n  ) {\n    _id,\n    title,\n    slug,\n    tier,\n    modules[]-> {\n      _id,\n      title,\n      lessons[]-> {\n        _id,\n        title,\n        slug,\n        completedBy\n      }\n    }\n  }\n}': LESSON_BY_ID_QUERYResult;
-    '*[\n  _type == "lesson"\n  && slug.current == $slug\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  video {\n    asset-> {\n      playbackId,\n      status,\n      data {\n        duration\n      }\n    }\n  },\n  content,\n  completedBy,\n  "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(\n    select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)\n  ) {\n    _id,\n    title,\n    slug,\n    tier,\n    modules[]-> {\n      _id,\n      title,\n      lessons[]-> {\n        _id,\n        title,\n        slug,\n        completedBy\n      }\n    }\n  }\n}': LESSON_BY_SLUG_QUERYResult;
+    '*[\n  _type == "course"\n  && slug.current == $slug\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  tier,\n  featured,\n  thumbnail {\n    asset-> {\n      _id,\n      url\n    }\n  },\n  category-> {\n    _id,\n    title\n  },\n  modules[]-> {\n    _id,\n    title,\n    description,\n    completedBy,\n    "quiz": *[_type == "quiz" && module._ref == ^._id][0] { _id, title, completedBy },\n    lessons[]-> {\n      _id,\n      title,\n      slug,\n      description,\n      completedBy,\n      "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title, completedBy },\n      video {\n        asset-> {\n          playbackId\n        }\n      }\n    }\n  },\n  completedBy,\n  "quiz": *[_type == "quiz" && course._ref == ^._id][0] { _id, title },\n  "moduleCount": count(modules),\n  "lessonCount": count(modules[]->lessons[]),\n  "completedLessonCount": count(modules[]->lessons[]->completedBy[@==$userId])\n}': COURSE_WITH_MODULES_QUERYResult;
+    '*[\n  _type == "lesson"\n  && _id == $id\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  video {\n    asset-> {\n      playbackId,\n      status,\n      data {\n        duration\n      }\n    }\n  },\n  content,\n  completedBy,\n  "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title },\n  "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(\n    select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)\n  ) {\n    _id,\n    title,\n    slug,\n    tier,\n    modules[]-> {\n      _id,\n      title,\n      "quiz": *[_type == "quiz" && module._ref == ^._id][0] { _id, title, completedBy },\n      lessons[]-> {\n        _id,\n        title,\n        slug,\n        completedBy,\n        "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title, completedBy }\n      }\n    }\n  }\n}': LESSON_BY_ID_QUERYResult;
+    '*[\n  _type == "lesson"\n  && slug.current == $slug\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  video {\n    asset-> {\n      playbackId,\n      status,\n      data {\n        duration\n      }\n    }\n  },\n  content,\n  completedBy,\n  "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title },\n  "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(\n    select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)\n  ) {\n    _id,\n    title,\n    slug,\n    tier,\n    modules[]-> {\n      _id,\n      title,\n      "quiz": *[_type == "quiz" && module._ref == ^._id][0] { _id, title, completedBy },\n      lessons[]-> {\n        _id,\n        title,\n        slug,\n        completedBy,\n        "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title, completedBy }\n      }\n    }\n  }\n}': LESSON_BY_SLUG_QUERYResult;
+    '*[\n  _type == "quiz"\n  && _id == $id\n][0] {\n  _id,\n  title,\n  passingScorePercent,\n  completedBy,\n  "tier": coalesce(\n    course->tier,\n    *[_type == "course" && references(^.module._id)][0].tier,\n    *[_type == "course" && ^.lesson._id in modules[]->lessons[]->_id][0].tier,\n    "free"\n  ),\n  lesson-> { _id, "slug": slug.current, completedBy },\n  module-> {\n    _id,\n    lessons[]-> {\n      _id,\n      completedBy,\n      "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { completedBy }\n    }\n  },\n  course-> { _id, "slug": slug.current },\n  questions[] {\n    _key,\n    _type,\n    prompt,\n    points,\n    options[] { _key, text, isCorrect },\n    acceptableAnswers,\n    items[] { _key, text },\n    pairs[] { _key, left, right }\n  }\n}': QUIZ_FULL_BY_ID_QUERYResult;
+    '*[\n  _type == "quizAttempt"\n  && quiz._ref == $quizId\n  && student == $studentId\n] | order(completedAt desc)[0] {\n  _id,\n  scorePercent,\n  passed,\n  totalPointsAwarded,\n  answers[] { questionKey, isCorrect, pointsAwarded }\n}': QUIZ_LATEST_ATTEMPT_QUERYResult;
+    '*[\n  _type == "quizAttempt"\n  && student == $studentId\n] | order(completedAt desc) {\n  _id,\n  quiz-> { _id, title },\n  scorePercent,\n  passed,\n  totalPointsAwarded,\n  completedAt\n}': QUIZ_ATTEMPTS_FOR_STUDENT_QUERYResult;
+    '*[\n  _type == "pointsTransaction"\n  && student == $studentId\n] | order(_createdAt desc) {\n  _id,\n  amount,\n  type,\n  note,\n  _createdAt\n}': POINTS_TRANSACTIONS_FOR_STUDENT_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && parent == $parentId\n] | order(_createdAt desc) {\n  _id,\n  childEmail,\n  child,\n  status,\n  token\n}': PARENT_LINKS_FOR_PARENT_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && token == $inviteToken\n][0] {\n  _id,\n  parent,\n  childEmail,\n  child,\n  status\n}': PARENT_LINK_BY_TOKEN_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && (\n    (status == "pending" && childEmail in $emails)\n    || (status == "accepted" && child == $childId)\n  )\n] | order(_createdAt desc) {\n  _id,\n  parent,\n  childEmail,\n  status\n}': PARENT_LINKS_FOR_CHILD_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && parent == $parentId\n  && child == $childId\n  && status == "accepted"\n][0] {\n  _id\n}': PARENT_LINK_FOR_CHILD_QUERYResult;
     '*[\n  _type == "course"\n  && $lessonId in modules[]->lessons[]->_id\n][0] {\n  _id,\n  title,\n  tier,\n  modules[]-> {\n    _id,\n    title,\n    lessons[]-> {\n      _id,\n      title\n    }\n  }\n}': LESSON_NAVIGATION_QUERYResult;
   }
 }
@@ -811,9 +1213,17 @@ declare module "groq" {
     '*[\n  _type == "course"\n  && slug.current == $slug\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  tier,\n  featured,\n  thumbnail {\n    asset-> {\n      _id,\n      url\n    }\n  },\n  category-> {\n    _id,\n    title\n  },\n  modules[]-> {\n    _id,\n    title,\n    description,\n    lessons[]-> {\n      _id,\n      title,\n      slug\n    }\n  }\n}': COURSE_BY_SLUG_QUERYResult;
     '{\n  "courseCount": count(*[_type == "course"]),\n  "lessonCount": count(*[_type == "lesson"])\n}': STATS_QUERYResult;
     '*[\n  _type == "course"\n] | order(_createdAt desc) {\n  _id,\n  title,\n  slug,\n  description,\n  tier,\n  featured,\n  completedBy,\n  thumbnail {\n    asset-> {\n      _id,\n      url\n    }\n  },\n  category-> {\n    _id,\n    title\n  },\n  modules[]-> {\n    lessons[]-> {\n      completedBy\n    }\n  },\n  "moduleCount": count(modules),\n  "lessonCount": count(modules[]->lessons[])\n}': DASHBOARD_COURSES_QUERYResult;
-    '*[\n  _type == "course"\n  && slug.current == $slug\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  tier,\n  featured,\n  thumbnail {\n    asset-> {\n      _id,\n      url\n    }\n  },\n  category-> {\n    _id,\n    title\n  },\n  modules[]-> {\n    _id,\n    title,\n    description,\n    completedBy,\n    lessons[]-> {\n      _id,\n      title,\n      slug,\n      description,\n      completedBy,\n      video {\n        asset-> {\n          playbackId\n        }\n      }\n    }\n  },\n  completedBy,\n  "moduleCount": count(modules),\n  "lessonCount": count(modules[]->lessons[]),\n  "completedLessonCount": count(modules[]->lessons[]->completedBy[@==$userId])\n}': COURSE_WITH_MODULES_QUERYResult;
-    '*[\n  _type == "lesson"\n  && _id == $id\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  video {\n    asset-> {\n      playbackId,\n      status,\n      data {\n        duration\n      }\n    }\n  },\n  content,\n  completedBy,\n  "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(\n    select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)\n  ) {\n    _id,\n    title,\n    slug,\n    tier,\n    modules[]-> {\n      _id,\n      title,\n      lessons[]-> {\n        _id,\n        title,\n        slug,\n        completedBy\n      }\n    }\n  }\n}': LESSON_BY_ID_QUERYResult;
-    '*[\n  _type == "lesson"\n  && slug.current == $slug\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  video {\n    asset-> {\n      playbackId,\n      status,\n      data {\n        duration\n      }\n    }\n  },\n  content,\n  completedBy,\n  "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(\n    select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)\n  ) {\n    _id,\n    title,\n    slug,\n    tier,\n    modules[]-> {\n      _id,\n      title,\n      lessons[]-> {\n        _id,\n        title,\n        slug,\n        completedBy\n      }\n    }\n  }\n}': LESSON_BY_SLUG_QUERYResult;
+    '*[\n  _type == "course"\n  && slug.current == $slug\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  tier,\n  featured,\n  thumbnail {\n    asset-> {\n      _id,\n      url\n    }\n  },\n  category-> {\n    _id,\n    title\n  },\n  modules[]-> {\n    _id,\n    title,\n    description,\n    completedBy,\n    "quiz": *[_type == "quiz" && module._ref == ^._id][0] { _id, title, completedBy },\n    lessons[]-> {\n      _id,\n      title,\n      slug,\n      description,\n      completedBy,\n      "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title, completedBy },\n      video {\n        asset-> {\n          playbackId\n        }\n      }\n    }\n  },\n  completedBy,\n  "quiz": *[_type == "quiz" && course._ref == ^._id][0] { _id, title },\n  "moduleCount": count(modules),\n  "lessonCount": count(modules[]->lessons[]),\n  "completedLessonCount": count(modules[]->lessons[]->completedBy[@==$userId])\n}': COURSE_WITH_MODULES_QUERYResult;
+    '*[\n  _type == "lesson"\n  && _id == $id\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  video {\n    asset-> {\n      playbackId,\n      status,\n      data {\n        duration\n      }\n    }\n  },\n  content,\n  completedBy,\n  "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title },\n  "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(\n    select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)\n  ) {\n    _id,\n    title,\n    slug,\n    tier,\n    modules[]-> {\n      _id,\n      title,\n      "quiz": *[_type == "quiz" && module._ref == ^._id][0] { _id, title, completedBy },\n      lessons[]-> {\n        _id,\n        title,\n        slug,\n        completedBy,\n        "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title, completedBy }\n      }\n    }\n  }\n}': LESSON_BY_ID_QUERYResult;
+    '*[\n  _type == "lesson"\n  && slug.current == $slug\n][0] {\n  _id,\n  title,\n  slug,\n  description,\n  video {\n    asset-> {\n      playbackId,\n      status,\n      data {\n        duration\n      }\n    }\n  },\n  content,\n  completedBy,\n  "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title },\n  "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(\n    select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)\n  ) {\n    _id,\n    title,\n    slug,\n    tier,\n    modules[]-> {\n      _id,\n      title,\n      "quiz": *[_type == "quiz" && module._ref == ^._id][0] { _id, title, completedBy },\n      lessons[]-> {\n        _id,\n        title,\n        slug,\n        completedBy,\n        "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { _id, title, completedBy }\n      }\n    }\n  }\n}': LESSON_BY_SLUG_QUERYResult;
+    '*[\n  _type == "quiz"\n  && _id == $id\n][0] {\n  _id,\n  title,\n  passingScorePercent,\n  completedBy,\n  "tier": coalesce(\n    course->tier,\n    *[_type == "course" && references(^.module._id)][0].tier,\n    *[_type == "course" && ^.lesson._id in modules[]->lessons[]->_id][0].tier,\n    "free"\n  ),\n  lesson-> { _id, "slug": slug.current, completedBy },\n  module-> {\n    _id,\n    lessons[]-> {\n      _id,\n      completedBy,\n      "quiz": *[_type == "quiz" && lesson._ref == ^._id][0] { completedBy }\n    }\n  },\n  course-> { _id, "slug": slug.current },\n  questions[] {\n    _key,\n    _type,\n    prompt,\n    points,\n    options[] { _key, text, isCorrect },\n    acceptableAnswers,\n    items[] { _key, text },\n    pairs[] { _key, left, right }\n  }\n}': QUIZ_FULL_BY_ID_QUERYResult;
+    '*[\n  _type == "quizAttempt"\n  && quiz._ref == $quizId\n  && student == $studentId\n] | order(completedAt desc)[0] {\n  _id,\n  scorePercent,\n  passed,\n  totalPointsAwarded,\n  answers[] { questionKey, isCorrect, pointsAwarded }\n}': QUIZ_LATEST_ATTEMPT_QUERYResult;
+    '*[\n  _type == "quizAttempt"\n  && student == $studentId\n] | order(completedAt desc) {\n  _id,\n  quiz-> { _id, title },\n  scorePercent,\n  passed,\n  totalPointsAwarded,\n  completedAt\n}': QUIZ_ATTEMPTS_FOR_STUDENT_QUERYResult;
+    '*[\n  _type == "pointsTransaction"\n  && student == $studentId\n] | order(_createdAt desc) {\n  _id,\n  amount,\n  type,\n  note,\n  _createdAt\n}': POINTS_TRANSACTIONS_FOR_STUDENT_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && parent == $parentId\n] | order(_createdAt desc) {\n  _id,\n  childEmail,\n  child,\n  status,\n  token\n}': PARENT_LINKS_FOR_PARENT_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && token == $inviteToken\n][0] {\n  _id,\n  parent,\n  childEmail,\n  child,\n  status\n}': PARENT_LINK_BY_TOKEN_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && (\n    (status == "pending" && childEmail in $emails)\n    || (status == "accepted" && child == $childId)\n  )\n] | order(_createdAt desc) {\n  _id,\n  parent,\n  childEmail,\n  status\n}': PARENT_LINKS_FOR_CHILD_QUERYResult;
+    '*[\n  _type == "parentLink"\n  && parent == $parentId\n  && child == $childId\n  && status == "accepted"\n][0] {\n  _id\n}': PARENT_LINK_FOR_CHILD_QUERYResult;
     '*[\n  _type == "course"\n  && $lessonId in modules[]->lessons[]->_id\n][0] {\n  _id,\n  title,\n  tier,\n  modules[]-> {\n    _id,\n    title,\n    lessons[]-> {\n      _id,\n      title\n    }\n  }\n}': LESSON_NAVIGATION_QUERYResult;
   }
 }

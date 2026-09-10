@@ -1,7 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useQuery } from "@sanity/sdk-react";
+import { defineQuery } from "groq";
+import { usePathname } from "next/navigation";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,8 +11,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { projectId, dataset } from "@/sanity/env";
-import { defineQuery } from "groq";
+import { dataset, projectId } from "@/sanity/env";
 
 // Pre-defined queries
 const COURSE_QUERY = defineQuery(

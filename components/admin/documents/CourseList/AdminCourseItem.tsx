@@ -1,6 +1,6 @@
 "use client";
 
-import { useDocumentProjection, type DocumentHandle } from "@sanity/sdk-react";
+import { type DocumentHandle, useDocumentProjection } from "@sanity/sdk-react";
 import { CourseCard } from "@/components/courses";
 import type { CourseData } from "./types";
 

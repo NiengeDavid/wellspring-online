@@ -1,16 +1,17 @@
 "use client";
 
-import { Suspense } from "react";
 import type { DocumentHandle } from "@sanity/sdk-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useDocument, useEditDocument } from "@sanity/sdk-react";
+import { Suspense } from "react";
 import { DocumentActions } from "@/components/admin/documents/DocumentActions";
 import { OpenInStudio } from "@/components/admin/documents/OpenInStudio";
-import { SlugInput } from "@/components/admin/inputs/SlugInput";
 import { MuxVideoInput } from "@/components/admin/inputs/MuxVideoInput";
 import { PortableTextInput } from "@/components/admin/inputs/PortableTextInput";
+import { SlugInput } from "@/components/admin/inputs/SlugInput";
+import { LinkedQuizCard } from "@/components/admin/shared/LinkedQuizCard";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 
 interface LessonEditorProps {
   documentId: string;
@@ -90,6 +91,18 @@ function LessonEditorContent({
               path="slug"
               label="URL Slug"
               sourceField="title"
+            />
+          </div>
+
+          {/* Quiz */}
+          <div className="bg-zinc-900/50 rounded-xl border border-zinc-800 p-6">
+            <h3 className="text-sm font-medium text-zinc-400 mb-4">Quiz</h3>
+            <LinkedQuizCard
+              documentId={documentId}
+              documentType="lesson"
+              projectId={projectId}
+              dataset={dataset}
+              parentTitle={title || "Lesson"}
             />
           </div>
 
