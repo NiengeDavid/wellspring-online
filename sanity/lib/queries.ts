@@ -312,6 +312,7 @@ export const QUIZ_LATEST_ATTEMPT_QUERY = defineQuery(`*[
   && quiz._ref == $quizId
   && student == $studentId
 ] | order(completedAt desc)[0] {
+  _id,
   scorePercent,
   passed,
   totalPointsAwarded,

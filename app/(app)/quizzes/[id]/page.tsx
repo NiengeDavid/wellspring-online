@@ -4,6 +4,13 @@ import { Header } from "@/components/Header";
 import { LockedFallback, QuizPlayer } from "@/components/quiz";
 import { getQuizForTaking } from "@/lib/actions";
 
+// This page reflects a student's latest attempt, which changes on every
+// submission — never let it be served from a cached render (server-side
+// full route cache, Sanity's fetch cache, or the client-side router cache).
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+
 interface QuizPageProps {
   params: Promise<{ id: string }>;
 }
@@ -37,10 +44,10 @@ export default async function QuizPage({ params }: QuizPageProps) {
 
       <main className="relative z-10 px-6 lg:px-12 py-8 max-w-3xl mx-auto">
         {result.success ? (
-          <QuizPlayer
-            initialQuiz={result.quiz}
-            initialResult={result.latestAttempt}
-          />
+          // QuizPlayer fetches its own content + latest-attempt status live on
+          // mount (same path Retake always used reliably) rather than trusting
+          // this server render, which can sit behind caching layers.
+          <QuizPlayer quizId={id} />
         ) : result.locked ? (
           <LockedFallback
             backHref={result.backHref ?? "/dashboard"}

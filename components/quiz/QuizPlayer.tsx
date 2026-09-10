@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { getQuizForTaking, submitQuizAttempt } from "@/lib/actions";
@@ -36,8 +36,7 @@ interface SubmissionResult {
 }
 
 interface QuizPlayerProps {
-  initialQuiz: QuizData;
-  initialResult?: SubmissionResult | null;
+  quizId: string;
 }
 
 function buildAnswer(
@@ -87,16 +86,47 @@ function buildAnswer(
   }
 }
 
-export function QuizPlayer({
-  initialQuiz,
-  initialResult = null,
-}: QuizPlayerProps) {
-  const [quiz, setQuiz] = useState(initialQuiz);
+export function QuizPlayer({ quizId }: QuizPlayerProps) {
+  // Quiz content and "has this student already answered it" are always
+  // fetched live, on mount, directly from the server action — the same
+  // reliable path Retake already used. This deliberately bypasses every
+  // page/route caching layer instead of trying to outsmart it: a fresh
+  // quizAttempt (or its absence) is the single source of truth per student.
+  const [quiz, setQuiz] = useState<QuizData | null>(null);
   const [answers, setAnswers] = useState<Record<string, unknown>>({});
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [result, setResult] = useState<SubmissionResult | null>(initialResult);
+  const [result, setResult] = useState<SubmissionResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  const loadQuiz = () => {
+    setError(null);
+    startTransition(async () => {
+      const response = await getQuizForTaking(quizId);
+      if (!response.success) {
+        setError(response.error);
+        return;
+      }
+      setQuiz(response.quiz);
+      setAnswers({});
+      setCurrentIndex(0);
+      setResult(response.latestAttempt);
+    });
+  };
+
+  useEffect(loadQuiz, []);
+
+  if (!quiz) {
+    return (
+      <div className="flex items-center justify-center py-24">
+        {error ? (
+          <p className="text-sm text-red-400">{error}</p>
+        ) : (
+          <Loader2 className="h-6 w-6 animate-spin text-zinc-500" />
+        )}
+      </div>
+    );
+  }
 
   const question = quiz.questions[currentIndex];
   const isLastQuestion = currentIndex === quiz.questions.length - 1;
@@ -121,21 +151,6 @@ export function QuizPlayer({
     });
   };
 
-  const handleRetake = () => {
-    setError(null);
-    startTransition(async () => {
-      const response = await getQuizForTaking(quiz.id);
-      if (!response.success) {
-        setError(response.error);
-        return;
-      }
-      setQuiz(response.quiz);
-      setAnswers({});
-      setCurrentIndex(0);
-      setResult(null);
-    });
-  };
-
   if (result) {
     return (
       <QuizResults
@@ -144,7 +159,7 @@ export function QuizPlayer({
         pointsAwarded={result.pointsAwarded}
         pointsWithheldReason={result.pointsWithheldReason}
         questions={result.questions}
-        onRetake={handleRetake}
+        onRetake={loadQuiz}
         backHref={quiz.backHref}
         backLabel={quiz.backLabel}
       />

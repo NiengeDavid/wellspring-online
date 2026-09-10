@@ -112,6 +112,7 @@ export async function getQuizForTaking(quizId: string): Promise<
         backLabel: string;
       };
       latestAttempt: {
+        attemptId: string;
         scorePercent: number;
         passed: boolean;
         pointsAwarded: number;
@@ -188,6 +189,7 @@ export async function getQuizForTaking(quizId: string): Promise<
 
   const latestAttempt = latest
     ? {
+        attemptId: latest._id,
         scorePercent: latest.scorePercent ?? 0,
         passed: latest.passed ?? false,
         pointsAwarded: latest.totalPointsAwarded ?? 0,
