@@ -1,4 +1,4 @@
-# Wellspring's Academy - AI-Powered LMS Platform
+# Wellspring's Academy
 
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
@@ -9,266 +9,188 @@
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o-412991?logo=openai)](https://openai.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
 
-> **Learn to build production-ready LMS platforms** with modern architecture, AI-powered features, and bespoke CMS solutions.
+An AI-powered Learning Management System: video courses organized into modules and lessons, gamified quizzes, an AI tutor, tiered subscriptions, and a Parent Portal for guardians to follow a learner's progress.
 
 ---
 
-<table>
-<tr>
-<td width="33%">
+## What This App Is
 
-### 🎯 Who This Is For
+Wellspring's Academy is a platform where:
 
-Developers who want to learn how to build **real-world course platforms** from scratch. Perfect for:
-- Aspiring full-stack developers
-- Developers exploring headless CMS
-- Anyone building SaaS products
-
-</td>
-<td width="33%">
-
-### ✨ What Makes This Special
-
-- **Custom Admin Panel** built with Sanity App SDK (not just Studio!)
-- **AI Learning Assistant** powered by GPT-4o
-- **Tiered Subscriptions** with Clerk billing
-- **Professional Video Streaming** via Mux
-
-</td>
-<td width="33%">
-
-### 🛠️ Technical Highlights
-
-- Next.js 16 App Router + React 19
-- Real-time content updates with Sanity SDK
-- Drag-and-drop course builder
-- TypeScript end-to-end with typegen
-- Modern UI with Shadcn + Tailwind 4
-
-</td>
-</tr>
-</table>
-
----
-
-## 👇🏼 DO THIS Before You Get Started
-
-Before diving into the code, set up accounts with these services:
-
-### 🎁 USE THESE Links!
-
-> **⚠️ IMPORTANT:** Using these affiliate links helps keep this content FREE for everyone! Your support makes a huge difference.
-
-<table>
-<tr>
-<th>Service</th>
-<th>What It's For</th>
-<th>Get Started</th>
-</tr>
-<tr>
-<td><strong>🟢 Sanity</strong></td>
-<td>Headless CMS for all your content</td>
-<td><a href="https://www.sanity.io/sonny?utm_source=youtube&utm_medium=video&utm_content=ai-lms-platform"><strong>👉 Get Started with Sanity</strong></a></td>
-</tr>
-<tr>
-<td><strong>🔐 Clerk</strong></td>
-<td>Authentication & subscription billing</td>
-<td><a href="https://go.clerk.com/5fXjeWr"><strong>👉 Get Started with Clerk</strong></a></td>
-</tr>
-<tr>
-<td><strong>🤖 CodeRabbit</strong></td>
-<td>AI-powered code reviews</td>
-<td><a href="https://coderabbit.link/sonny-dec"><strong>👉 Get Started with CodeRabbit</strong></a></td>
-</tr>
-</table>
-
-**💡 Pro Tip:** These are the exact services used in production - you'll need them to follow along!
-
-### Other Required Services
-
-| Service | What It's For | Get Started |
-|---------|---------------|-------------|
-| **Mux** | Video hosting & streaming | 👉 [mux.com](https://www.mux.com/) |
-| **OpenAI** | AI tutor functionality | 👉 [platform.openai.com](https://platform.openai.com/) |
-
----
-
-## 📖 What Is This App?
-
-**Think of Sonny's Academy as Netflix for courses, but with an AI tutor that knows everything about your content.**
-
-This is a Learning Management System (LMS) - a platform where:
-- **Creators** upload and organize video courses
-- **Learners** watch lessons, track progress, and get AI-powered help
-- **Admins** manage everything through a beautiful custom dashboard
+- **Creators** upload and organize video courses through a custom admin panel
+- **Learners** watch lessons, take quizzes, earn points, and get AI-powered help
+- **Parents/guardians** link to a learner's account to follow their quiz scores, points, and course progress
+- **Admins** manage all content through a bespoke dashboard built on the Sanity App SDK
 
 ### Key Concepts
 
 | Concept | What It Means |
-|---------|---------------|
-| **Course** | A collection of modules on a topic (e.g., "Master React") |
-| **Module** | A chapter within a course (e.g., "React Hooks Deep Dive") |
-| **Lesson** | An individual video + notes (e.g., "Understanding useState") |
+|---------|----------------|
+| **Course** | A collection of modules on a topic |
+| **Module** | A chapter within a course, made up of lessons (and optionally a module quiz) |
+| **Lesson** | An individual video + notes (and optionally a lesson quiz) |
+| **Quiz** | A set of questions attached to a lesson, module, or course (final exam) |
 | **Tier** | Access level: Free, Pro ($), or Ultra ($$) |
-| **AI Tutor** | Chat assistant that searches your course content to answer questions |
-
-### Example Use Cases
-
-- 🎓 **Online Course Platform** - Sell programming courses with subscription tiers
-- 🏢 **Corporate Training** - Internal training portal for employees
-- 📚 **Educational Institution** - Supplement classroom learning with video content
+| **Points** | Earned by passing a quiz (first attempt only); shown on the student dashboard |
+| **AI Tutor** | Chat assistant (Ultra only) that searches course content to answer questions |
+| **Parent Portal** | Any account can link to another as a "parent" to view that account's progress |
 
 ---
 
-## 🚀 Before We Dive In - Join the PAPAFAM!
-
-**Want to build apps like this from scratch?** Join thousands of developers leveling up their skills!
-
-### What You'll Master
-
-- ⚛️ Modern React patterns & Next.js App Router
-- 🗄️ Headless CMS architecture with Sanity
-- 🔐 Production authentication & billing flows
-- 🤖 AI integration with tool calling & RAG patterns
-- 📹 Professional video streaming infrastructure
-- 🎨 Beautiful UI with Tailwind CSS & Shadcn
-
-### PAPAFAM Community Benefits
-
-- 📺 **Full Build Videos** - Watch every line of code being written
-- 💬 **Discord Community** - Get help from Sonny and 50,000+ developers
-- 🏆 **Project Portfolio** - Ship real projects, not toy apps
-- 🎯 **Career Guidance** - From beginner to job-ready
-
-### Real Results
-
-> "I went from tutorial hell to shipping production apps in 3 months" - PAPAFAM Graduate
-
-### What's Included
-
-- Step-by-step video tutorials
-- Complete source code access
-- Private Discord channels
-- Weekly live coding sessions
-- Resume & portfolio reviews
-
-👉 **[Join the PAPAFAM Today](https://www.papareact.com/course)**
-
----
-
-## ⭐ Features
+## Features
 
 ### For Learners
 
 | Feature | Free | Pro | Ultra |
 |---------|:----:|:---:|:-----:|
 | Access to foundational courses | ✅ | ✅ | ✅ |
-| Community Discord access | ✅ | ✅ | ✅ |
 | Basic projects & exercises | ✅ | ✅ | ✅ |
-| Email support | ✅ | ✅ | ✅ |
+| Quizzes, points & progress tracking | ✅ | ✅ | ✅ |
 | All Pro-tier courses | ❌ | ✅ | ✅ |
 | Advanced real-world projects | ❌ | ✅ | ✅ |
 | Priority support | ❌ | ✅ | ✅ |
-| Course completion certificates | ❌ | ✅ | ✅ |
 | **🤖 AI Learning Assistant** | ❌ | ❌ | ✅ |
 | Exclusive Ultra-only content | ❌ | ❌ | ✅ |
-| Monthly 1-on-1 sessions | ❌ | ❌ | ✅ |
-| Private Discord channel | ❌ | ❌ | ✅ |
 | Early access to new courses | ❌ | ❌ | ✅ |
-| Lifetime updates | ❌ | ❌ | ✅ |
 
-### For Developers (Technical Features)
+### Quizzes & Gamification
 
-#### 🏗️ The `/admin` vs `/studio` Paradigm
+- Five question types, mixable within a single quiz: multiple choice, select-all-that-apply, fill-in-the-blank, ordering, and matching
+- Quizzes attach to a lesson, a module (review), or a course (final exam)
+- Server-side grading only — correct answers are never sent to the client
+- Points are awarded once per quiz (first attempt), preventing point-farming via retakes
+- Quizzes appear as real entries in the course/lesson outline, alongside lessons
+- Sequential progression within a module — each item (lesson or quiz) unlocks only once the previous one is completed, enforced server-side
 
-This project teaches you **two different approaches** to content management:
+### Parent Portal
 
-| Route | Technology | Purpose |
-|-------|------------|---------|
-| `/admin` | **Sanity App SDK** | Custom bespoke CMS frontend - Build your own admin experience |
-| `/studio` | **Sanity Studio** | Traditional Sanity Studio - Full CMS fallback |
+- Any signed-in account can invite another account (by email) to follow its progress — this is additive, not a separate account type, so a parent can also be a learner themself
+- Invited accounts see the request in-app ("Your Parents") with Approve/Deny, in addition to a transactional email
+- Parents get notified by email when a child approves or declines
+- Parents can view a linked child's course progress, quiz history, and points balance, and remove the link at any time
 
-**Why both?** The `/admin` route demonstrates how to build a completely custom content management experience using Sanity's App SDK. This is the modern way to create bespoke backends tailored to your exact needs. The `/studio` route serves as a fallback for advanced CMS operations.
+### For Admins
 
-#### Sanity App SDK Features Used
+- **Custom Admin Panel** (`/admin`) built with the Sanity App SDK — course, module, lesson, category, and quiz editors, all with live document editing (no separate save step)
+- **Quiz builder** — drag-reorderable question list supporting all five question types, with a one-click shortcut to create a quiz pre-attached to the lesson/module/course you're editing
+- **Sanity Studio** (`/studio`) as a full-featured fallback for anything the custom panel doesn't cover
 
-```typescript
-// Hooks for real-time document editing
-import {
-  useDocument,        // Read document/field data
-  useEditDocument,    // Edit document fields
-  useDocuments,       // List all documents of a type
-  useQuery,           // Run GROQ queries
-  useApplyDocumentActions,  // Apply document mutations
-} from "@sanity/sdk-react";
+### AI Learning Assistant
 
-// Document actions
-import {
-  publishDocument,
-  unpublishDocument,
-  discardDocument,
-  deleteDocument,
-  createDocument,
-} from "@sanity/sdk-react";
-```
+- Powered by **GPT-4o** via the Vercel AI SDK, gated to Ultra subscribers
+- Tool-calling agent that searches course titles, descriptions, and lesson content to answer questions and recommend lessons
+- Never answers from outside the course catalog — no hallucinated content
 
-#### Custom Admin Components
+### Video & Auth
 
-- 📝 **CourseEditor** - Full course editing with modules sidebar
-- 🎯 **ModuleAccordionInput** - Drag-and-drop module reordering
-- 🖼️ **ImageInput** - Image upload with preview
-- 🔗 **ReferenceInput** - Document reference picker
-- 🏷️ **SlugInput** - Auto-generated URL slugs
-- ⚡ **DocumentActions** - Publish/Unpublish/Discard/Delete
-
-#### 🤖 AI Learning Assistant
-
-- Powered by **GPT-4o** via Vercel AI SDK
-- **Tool calling** to search course content
-- Semantic search across courses, modules, and lessons
-- Only available to Ultra subscribers
-
-#### 📹 Video Streaming
-
-- **Mux** integration for professional video hosting
-- Signed playback tokens for security
-- Adaptive bitrate streaming
-- Thumbnail and storyboard generation
-
-#### 🔐 Authentication & Billing
-
-- **Clerk** handles auth, users, and subscriptions
-- Pricing table component for plan selection
-- Tier-based content gating
-- Webhook integration for billing events
-
-#### 📊 Progress Tracking
-
-- Mark lessons as complete
-- Track course completion percentage
-- Per-user progress stored in Sanity
+- **Mux** for video hosting, signed playback tokens, and adaptive bitrate streaming
+- **Clerk** for authentication and tiered subscription billing
 
 ---
 
-## 🔄 How It Works
+## Tech Stack
 
-### User Journey
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 16 (App Router), React 19 |
+| Language | TypeScript, end-to-end typed via Sanity typegen |
+| CMS / Database | Sanity (custom App SDK admin panel + Studio) |
+| Auth & Billing | Clerk |
+| Video | Mux |
+| AI | OpenAI GPT-4o via Vercel AI SDK |
+| Email | Brevo (transactional email for parent invites) |
+| Styling | Tailwind CSS 4, Shadcn UI |
+| Drag & drop | dnd-kit |
+| Linting/formatting | Biome |
 
-```mermaid
-flowchart LR
-    A[Visit Site] --> B{Signed In?}
-    B -->|No| C[Browse Free Courses]
-    B -->|Yes| D[Dashboard]
-    C --> E[Sign Up with Clerk]
-    E --> D
-    D --> F[Browse All Courses]
-    F --> G{Has Access?}
-    G -->|Yes| H[Watch Lessons]
-    G -->|No| I[Upgrade Plan]
-    I --> F
-    H --> J[Mark Complete]
-    J --> K[Get Certificate]
+---
+
+## Getting Started
+
+### Prerequisites
+
+- **Node.js 18+**
+- **pnpm**
+- Accounts: Sanity, Clerk, Mux, OpenAI, Brevo
+
+### Installation
+
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd wellspring-online
+
+# Install dependencies
+pnpm install
+
+# Copy environment variables and fill them in (see below)
+cp .env.example .env.local
+
+# Run the dev server
+pnpm dev
 ```
+
+- Main app: [http://localhost:3000](http://localhost:3000)
+- Admin panel: [http://localhost:3000/admin](http://localhost:3000/admin)
+- Sanity Studio: [http://localhost:3000/studio](http://localhost:3000/studio)
+
+### Environment Variables
+
+```bash
+# App
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+# Sanity
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2025-11-27
+NEXT_PUBLIC_SANITY_ORG_ID=your_org_id
+SANITY_API_READ_TOKEN=your_read_token
+SANITY_API_WRITE_TOKEN=your_write_token
+
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+
+# OpenAI (AI Tutor, Ultra tier only)
+OPENAI_API_KEY=sk-...
+
+# Mux Video
+MUX_TOKEN_ID=your_mux_token_id
+MUX_TOKEN_SECRET=your_mux_token_secret
+MUX_SIGNING_KEY_ID=your_signing_key_id
+MUX_SIGNING_KEY_PRIVATE=your_signing_key_private
+
+# Brevo (transactional email for Parent Portal invites)
+BREVO_API_KEY=your_brevo_api_key
+BREVO_SENDER_EMAIL=you@yourdomain.com   # must be a verified sender in Brevo
+BREVO_SENDER_NAME=Wellspring's Academy   # optional
+```
+
+> ⚠️ **Security notes:** Never commit `.env.local`. Variables starting with `NEXT_PUBLIC_` are exposed to the browser — keep every other key (Clerk secret, Mux signing key, Sanity write token, Brevo key) strictly server-side.
+
+### First-Time Setup Checklist
+
+- [ ] Create a Sanity project and dataset
+- [ ] Set up a Clerk application with pricing plans (Free, Pro, Ultra)
+- [ ] Create a Mux account, get API tokens and a signing key pair
+- [ ] Add an OpenAI API key
+- [ ] Create a Brevo account, verify a sender email/domain, add its API key
+- [ ] Run `pnpm dev` and confirm all pages load
+- [ ] Create your first course, module, lesson, and quiz via `/admin`
+
+---
+
+## Architecture
+
+### `/admin` vs `/studio`
+
+| Route | Technology | Purpose |
+|-------|------------|---------|
+| `/admin` | **Sanity App SDK** | The bespoke, purpose-built CMS frontend learners' course creators actually use |
+| `/studio` | **Sanity Studio** | Full-featured fallback for content types or operations the custom panel doesn't cover |
+
+The `/admin` panel is built directly on the Sanity App SDK's live-document hooks (`useDocument`, `useEditDocument`, `useDocuments`, `useQuery`, `useApplyDocumentActions`) — every field edit patches the document in real time, and "Publish"/"Discard" are explicit actions rather than a form submit.
 
 ### Content Hierarchy
 
@@ -276,37 +198,32 @@ flowchart LR
 flowchart TD
     A[Course] --> B[Module 1]
     A --> C[Module 2]
-    A --> D[Module 3]
     B --> E[Lesson 1.1]
     B --> F[Lesson 1.2]
+    F --> FQ[Lesson Quiz]
+    B --> BQ[Module Quiz]
     C --> G[Lesson 2.1]
-    C --> H[Lesson 2.2]
-    C --> I[Lesson 2.3]
-    D --> J[Lesson 3.1]
+    A --> AQ[Course Final Exam]
 ```
 
-### Admin vs Studio Architecture
+### Quiz Grading Flow
 
 ```mermaid
-flowchart TB
-    subgraph "Custom Admin /admin"
-        A1[React Components] --> A2[Sanity App SDK]
-        A2 --> A3[useDocument]
-        A2 --> A4[useEditDocument]
-        A2 --> A5[useApplyDocumentActions]
-    end
-    
-    subgraph "Sanity Studio /studio"
-        B1[NextStudio] --> B2[Sanity Config]
-        B2 --> B3[Schema Types]
-        B2 --> B4[Desk Structure]
-    end
-    
-    A3 --> C[Sanity API]
-    A4 --> C
-    A5 --> C
-    B1 --> C
-    C --> D[(Sanity Dataset)]
+sequenceDiagram
+    participant U as Student
+    participant P as QuizPlayer
+    participant A as Server Action
+    participant DB as Sanity
+
+    U->>P: Open quiz
+    P->>A: getQuizForTaking(quizId)
+    A->>DB: Fetch quiz (correct answers stripped)
+    A->>DB: Fetch latest attempt, if any
+    A-->>P: Sanitized questions + latest result
+    U->>P: Answer & submit
+    P->>A: submitQuizAttempt(answers)
+    A->>DB: Grade server-side, write attempt + points
+    A-->>P: Score, pass/fail, points earned
 ```
 
 ### AI Tutor Flow
@@ -315,301 +232,105 @@ flowchart TB
 sequenceDiagram
     participant U as User
     participant T as Tutor Widget
-    participant A as AI Agent
+    participant Agent as AI Agent
     participant S as Search Tool
     participant DB as Sanity
 
     U->>T: Ask question
-    T->>A: Send message
-    A->>S: searchCourses tool
+    T->>Agent: Send message
+    Agent->>S: searchCourses tool
     S->>DB: GROQ query
     DB-->>S: Course content
-    S-->>A: Relevant lessons
-    A-->>T: Answer with citations
+    S-->>Agent: Relevant lessons
+    Agent-->>T: Answer with citations
     T-->>U: Display response
 ```
 
 ---
 
-## 🚀 Getting Started
+## Database Schema Overview
 
-### Prerequisites
-
-- **Node.js 18+** (recommend using [nvm](https://github.com/nvm-sh/nvm))
-- **pnpm** (package manager)
-- Accounts: Sanity, Clerk, Mux, OpenAI
-
-### Installation
-
-1. **Clone the repository**
-
-```bash
-git clone https://github.com/your-username/sonnys-academy.git
-cd sonnys-academy
-```
-
-2. **Install dependencies**
-
-```bash
-pnpm install
-```
-
-3. **Copy environment variables**
-
-```bash
-cp .env.example .env.local
-```
-
-4. **Configure environment variables** (see below)
-
-5. **Run development server**
-
-```bash
-pnpm dev
-```
-
-6. **Open the app**
-
-- Main app: [http://localhost:3000](http://localhost:3000)
-- Admin panel: [http://localhost:3000/admin](http://localhost:3000/admin)
-- Sanity Studio: [http://localhost:3000/studio](http://localhost:3000/studio)
-
-### Environment Variables
-
-Create a `.env.local` file with the following variables:
-
-```bash
-# Sanity Configuration
-NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
-NEXT_PUBLIC_SANITY_DATASET=production
-NEXT_PUBLIC_SANITY_API_VERSION=2025-11-27
-
-# Clerk Authentication
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
-CLERK_SECRET_KEY=sk_test_...
-
-# OpenAI (for AI Tutor)
-OPENAI_API_KEY=sk-...
-
-# Mux Video
-MUX_TOKEN_ID=your_mux_token_id
-MUX_TOKEN_SECRET=your_mux_token_secret
-MUX_SIGNING_KEY_ID=your_signing_key_id
-MUX_SIGNING_KEY_PRIVATE=your_signing_key_private
-```
-
-> ⚠️ **Security Notes:**
-> - Never commit `.env.local` to version control
-> - Variables starting with `NEXT_PUBLIC_` are exposed to the browser
-> - Keep `CLERK_SECRET_KEY` and `MUX_SIGNING_KEY_PRIVATE` strictly server-side
-
-### First-Time Setup Checklist
-
-- [ ] Create Sanity project and get credentials
-- [ ] Set up Clerk application with pricing plans (Free, Pro, Ultra)
-- [ ] Configure Clerk webhooks for billing events
-- [ ] Create Mux account and get API tokens
-- [ ] Generate Mux signing keys for secure playback
-- [ ] Add OpenAI API key
-- [ ] Run `pnpm dev` and verify all pages load
-- [ ] Create your first course via `/admin` or `/studio`
-
----
-
-## 🗄️ Database Schema Overview
-
-### Document Types
-
-| Type | Description | Key Fields |
-|------|-------------|------------|
-| **Course** | Top-level learning container | title, slug, description, tier, modules[], featured |
-| **Module** | Groups related lessons | title, description, lessons[] |
-| **Lesson** | Individual learning unit | title, slug, description, video, content, completedBy[] |
-| **Category** | Organizes courses | title, description |
-| **Note** | User notes (demo feature) | title, content, status |
-
-### Relationships
-
-```
-Course
-├── category (reference → Category)
-├── modules[] (references → Module[])
-│   └── lessons[] (references → Lesson[])
-└── completedBy[] (user IDs who completed)
-
-Lesson
-├── video (Mux video asset)
-├── content (Portable Text)
-└── completedBy[] (user IDs who completed)
-```
+| Type | Description |
+|------|-------------|
+| `course` | Top-level container: title, slug, tier, modules[], featured |
+| `module` | Groups lessons: title, description, lessons[], completedBy[] |
+| `lesson` | Video + notes: title, slug, video, content (Portable Text), completedBy[] |
+| `category` | Organizes courses |
+| `quiz` | Attaches to a lesson, module, or course; questions[], passingScorePercent, completedBy[] |
+| `multipleChoiceQuestion` / `selectAllQuestion` / `fillInQuestion` / `orderingQuestion` / `matchingQuestion` | The five question object types used inside `quiz.questions[]` |
+| `quizAttempt` | One per submission: student, quiz ref, graded answers, score, points awarded |
+| `pointsTransaction` | Ledger entry (+/-) per student; sums to their points balance |
+| `parentLink` | Links a parent account to a child account by email, with pending/accepted status |
+| `note` | User notes (demo feature) |
 
 ### Design Decisions
 
-1. **References over embedding** - Modules and lessons are separate documents referenced by courses. This allows reusing content across courses.
-
-2. **Completion tracking in documents** - User completion is stored as arrays of user IDs directly on course/lesson documents for simplicity.
-
-3. **Tier on courses, not lessons** - Access control is at the course level. All lessons in a course inherit its tier.
-
-4. **Portable Text for lesson content** - Rich text with full formatting support for lesson notes.
+1. **References over embedding** — modules and lessons are separate documents referenced by courses, so content can be reused across courses.
+2. **Completion tracked as arrays of user IDs** — stored directly on `course`/`module`/`lesson`/`quiz` documents (`completedBy[]`) rather than a separate progress collection, for simplicity.
+3. **Tier lives on the course** — all lessons and quizzes in a course inherit its access tier.
+4. **Quiz grading never trusts the client** — correct answers are stripped before a quiz is sent to the browser; grading happens entirely server-side against the authoritative document.
+5. **Points are a ledger, not a mutable counter** — each earn/spend is its own `pointsTransaction`, and the balance is the sum, which keeps the history auditable and makes a future redemption/spend feature a non-breaking addition.
 
 ---
 
-## 🚢 Deployment
+## Deployment
 
 ### Deploy to Vercel
 
-#### Option 1: Vercel CLI
-
 ```bash
-# Install Vercel CLI
 pnpm i -g vercel
-
-# Deploy
-vercel
-
-# For production
-vercel --prod
+vercel        # preview deploy
+vercel --prod # production deploy
 ```
 
-#### Option 2: GitHub Integration
-
-1. Push your code to GitHub
-2. Go to [vercel.com](https://vercel.com)
-3. Import your repository
-4. Add environment variables
-5. Deploy!
+Or connect the repository via the Vercel dashboard and add the environment variables listed above.
 
 ### Post-Deployment Checklist
 
-- [ ] Verify all environment variables are set in Vercel
-- [ ] Test authentication flow (sign up, sign in, sign out)
-- [ ] Test subscription purchase flow
-- [ ] Verify video playback works
-- [ ] Test AI tutor (Ultra accounts only)
-- [ ] Set up Clerk webhooks with production URL
-- [ ] Configure Sanity CORS for production domain
-
-### Configure Clerk Webhooks
-
-1. Go to Clerk Dashboard → Webhooks
-2. Add endpoint: `https://your-domain.com/api/webhooks/clerk`
-3. Select events: `user.created`, `user.updated`, `subscription.created`, `subscription.updated`
+- [ ] All environment variables set in Vercel (including `BREVO_SENDER_EMAIL`)
+- [ ] Authentication flow works (sign up, sign in, sign out)
+- [ ] Subscription/upgrade flow works
+- [ ] Video playback works
+- [ ] AI tutor works (Ultra accounts only)
+- [ ] Parent invite email sends and the accept link works
+- [ ] Sanity CORS configured for the production domain
 
 ---
 
-## 🔧 Common Issues & Solutions
+## Common Issues & Solutions
 
-### Authentication Issues
-
-| Problem | Solution |
-|---------|----------|
-| "Clerk not loading" | Check `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` is set correctly |
-| "Unauthorized" errors | Verify `CLERK_SECRET_KEY` matches your Clerk app |
-| Subscription not recognized | Check Clerk webhook is configured and receiving events |
-
-### Video Issues
-
-| Problem | Solution |
-|---------|----------|
-| Videos not playing | Verify Mux credentials are correct |
-| "Playback token invalid" | Check `MUX_SIGNING_KEY_PRIVATE` is properly formatted |
-| Videos stuck loading | Ensure Mux asset status is "ready" in Sanity |
-
-### Sanity Issues
-
-| Problem | Solution |
-|---------|----------|
-| "Project not found" | Double-check `NEXT_PUBLIC_SANITY_PROJECT_ID` |
-| Content not updating | Check you're using the correct dataset |
-| TypeScript errors | Run `pnpm typegen` to regenerate types |
-| Schema changes not appearing | Restart dev server and rebuild Studio |
-
-### AI Tutor Issues
-
-| Problem | Solution |
-|---------|----------|
-| Tutor not responding | Verify `OPENAI_API_KEY` is valid |
-| "No content found" | Ensure courses have published content |
-| Tutor showing for non-Ultra users | Check Clerk subscription configuration |
+| Area | Problem | Solution |
+|------|---------|----------|
+| Auth | "Clerk not loading" | Check `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` |
+| Auth | Subscription not recognized | Verify Clerk billing/webhook configuration |
+| Video | Videos not playing | Verify Mux credentials and that the asset status is "ready" |
+| Video | "Playback token invalid" | Check `MUX_SIGNING_KEY_PRIVATE` formatting |
+| Sanity | TypeScript errors after a schema change | Run `pnpm types:generate` |
+| Sanity | Schema changes not appearing | Restart the dev server |
+| AI Tutor | Not responding | Verify `OPENAI_API_KEY` is valid |
+| AI Tutor | Showing for non-Ultra users | Check the Clerk plan check in `app/api/chat/route.ts` |
+| Parent invites | Email never arrives | Verify `BREVO_SENDER_EMAIL` is a **verified** sender in your Brevo account — invites still get created even if the email send fails |
 
 ---
 
-## 🏆 Take It Further - Challenge Time!
+## License
 
-Ready to level up? Here are advanced features to build:
-
-### Learning Features
-
-- [ ] **Quizzes** - Add quiz questions after each lesson
-- [ ] **Certificates** - Generate PDF certificates on course completion
-- [ ] **Discussion forums** - Comment sections for each lesson
-- [ ] **Bookmarks** - Save favorite lessons for later
-
-### AI Improvements
-
-- [ ] **Multiple AI models** - Add Claude, Gemini support
-- [ ] **Chat history** - Persist tutor conversations
-- [ ] **Contextual help** - Auto-suggest based on current lesson
-- [ ] **Content generation** - AI-assisted lesson writing
-
-### Infrastructure & Scaling
-
-- [ ] **Search** - Full-text search with Algolia or Typesense
-- [ ] **Analytics** - Track engagement with Posthog or Plausible
-- [ ] **Email notifications** - Course updates, completion emails
-- [ ] **Multi-tenancy** - White-label for organizations
-
-### Monetization
-
-- [ ] **One-time purchases** - Buy individual courses
-- [ ] **Gift subscriptions** - Purchase for others
-- [ ] **Affiliate program** - Referral commissions
-- [ ] **Team plans** - B2B licensing
+This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International License** — see [LICENSE.md](LICENSE.md) for the full text and attribution requirements.
 
 ---
 
-## 📄 License
-
-This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International License**.
-
-### You CAN:
-
-- ✅ Use this code for learning and personal projects
-- ✅ Modify and adapt the code
-- ✅ Share your modifications (with attribution)
-- ✅ Use as a portfolio piece
-
-### You CANNOT:
-
-- ❌ Use this code for commercial purposes
-- ❌ Sell courses or templates based on this code
-- ❌ Remove attribution to the original author
-- ❌ Use for client work without a commercial license
-
-### Need Commercial Use?
-
-Contact [Sonny Sangha](https://www.papareact.com) for commercial licensing options.
-
-See [LICENSE.md](LICENSE.md) for the full license text.
-
----
-
-## 📚 Quick Reference
+## Quick Reference
 
 ### Useful Commands
 
 ```bash
-# Development
 pnpm dev              # Start dev server
 pnpm build            # Production build
 pnpm start            # Start production server
 
-# Type Generation
-pnpm typegen          # Generate Sanity types
+pnpm types:generate   # Extract Sanity schema + generate TypeScript types
 pnpm typecheck        # Check TypeScript
 
-# Code Quality
 pnpm lint             # Run Biome linter
 pnpm format           # Format with Biome
 ```
@@ -619,41 +340,35 @@ pnpm format           # Format with Biome
 ```
 ├── app/
 │   ├── (admin)/admin/     # Custom admin panel (Sanity App SDK)
-│   ├── (app)/             # Main learner-facing app
-│   ├── studio/            # Sanity Studio
-│   └── api/               # API routes (AI chat)
+│   ├── (app)/             # Learner-facing app, incl. /parent (Parent Portal) and /quizzes
+│   ├── studio/             # Sanity Studio
+│   └── api/                # API routes (AI chat)
 ├── components/
-│   ├── admin/             # Admin components & editors
-│   ├── courses/           # Course display components
-│   ├── lessons/           # Lesson player & sidebar
-│   ├── tutor/             # AI tutor widget
-│   └── ui/                # Shadcn components
+│   ├── admin/              # Admin components & editors
+│   ├── courses/ lessons/   # Course & lesson display components
+│   ├── quiz/                # Quiz-taking UI
+│   ├── parent/              # Parent Portal UI
+│   ├── tutor/                # AI tutor widget
+│   └── ui/                   # Shadcn components
 ├── lib/
-│   ├── actions/           # Server actions
-│   ├── ai/                # AI agent & tools
-│   └── hooks/             # Custom React hooks
+│   ├── actions/             # Server actions (courses, lessons, quizzes, parent)
+│   ├── ai/                   # AI agent & tools
+│   ├── email/                 # Brevo transactional email
+│   └── module-items.ts        # Shared lesson/quiz outline + sequential-locking logic
 ├── sanity/
-│   ├── schemaTypes/       # Sanity schema definitions
-│   └── lib/               # Sanity client & queries
-└── sanity.config.ts       # Sanity Studio config
+│   ├── schemaTypes/          # Sanity schema definitions
+│   └── lib/                   # Sanity client & GROQ queries
+└── sanity.config.ts            # Sanity Studio config
 ```
 
 ### Important Concepts
 
 | Concept | File(s) | Description |
-|---------|---------|-------------|
-| Sanity App SDK Provider | `components/SanityAppProvider.tsx` | Wraps app with Sanity SDK context |
-| Tier Access Control | `lib/course-access.ts` | Checks user subscription tier |
-| AI Tutor Agent | `lib/ai/tutor-agent.ts` | GPT-4o agent with course search tool |
-| Document Actions | `components/admin/documents/DocumentActions.tsx` | Publish/unpublish/delete logic |
-| Tier Features | `lib/constants.ts` | Feature list per subscription tier |
-
----
-
-<p align="center">
-  <strong>Built with ❤️ by <a href="https://www.papareact.com">Sonny Sangha</a></strong>
-  <br />
-  <a href="https://www.papareact.com/course">Join the PAPAFAM</a> •
-  <a href="https://www.youtube.com/@SonnySangha">YouTube</a> •
-  <a href="https://twitter.com/SonnySangha">Twitter</a>
-</p>
+|---------|---------|--------------|
+| Sanity App SDK Provider | `components/SanityAppProvider.tsx` | Wraps the app in Sanity SDK context (used by `/admin`) |
+| Tier Access Control | `lib/course-access.ts` | Checks a user's subscription tier |
+| Quiz Grading | `lib/actions/quizzes.ts` | Server-side-only grading, points ledger, sequential lock checks |
+| Outline & Locking | `lib/module-items.ts` | Builds the ordered lesson+quiz outline and unlock state per module |
+| AI Tutor Agent | `lib/ai/tutor-agent.ts` | GPT-4o agent with a course-search tool |
+| Parent Portal | `lib/actions/parent.ts` | Invite, approve/deny, and progress-viewing logic |
+| Document Actions | `components/admin/documents/DocumentActions.tsx` | Publish/unpublish/discard/delete logic in the admin panel |
